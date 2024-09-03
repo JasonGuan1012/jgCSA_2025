@@ -2,8 +2,8 @@ title: Nighthawk Pages
 description: "Class of 2025"
 owner_name: Jason Guan
 github_username: JasonGuan1012
-github_repo: "JasonCSA_2025" 
-baseurl: "/JasonCSA_2025"
+github_repo: "jgCSA_2025" 
+baseurl: "/jgCSA_2025"
 future: true
 remote_theme: jekyll/minima
 minima:
