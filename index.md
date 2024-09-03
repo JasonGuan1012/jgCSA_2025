@@ -22,6 +22,7 @@ hide: true
 - **Submenu**
   - [APCSA Planning Page](https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html)
   - [JavaScript Hack](https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/JavaScript_IPYNB_2_.html)
+  - [Frontend Development Hacks](https://jasonguan1012.github.io/jgCSA_2025/hacks/2023/08/27/frontend-basics-playground_IPYNB_2_.html)
 
 
 
