@@ -6,7 +6,47 @@ hide: true
 ---
 
 # My journey starts here.
-Jason Guan
+
+<img src="https://delnorte.powayusd.com/pics/school_logo.png" alt="My favorite image" width="300" height="300">
+
+<br>
+
+## Visit my GitHub Blog
+- [Visit My Blog](https://github.com/JasonGuan1012/jgCSA_2025)
+
+
+
+## Main Menu
+- [ToolHacksReviewTicket](http://127.0.0.1:4100/jgCSA_2025/2024/08/26/ToolHacksReviewTicket_IPYNB_2_.html)
+- [HacksTools&EquipmentPlay](http://127.0.0.1:4100/jgCSA_2025/hacks/2024/09/02/HacksTools&EquipmentPlay_IPYNB_2_.html)
+- **Submenu**
+  - [APCSA Planning Page](http://127.0.0.1:4100/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html)
+  - [JavaScript Hack](http://127.0.0.1:4100/jgCSA_2025/hacks/2024/09/01/JavaScript_IPYNB_2_.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <br>
 <br>
