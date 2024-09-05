@@ -1,0 +1,32 @@
+/* Styling for the page */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centers the game elements */
+.game-container {
+    margin-top: 50px;
+}
+
+/* Makes the cookie image bigger and clickable */
+#cookie {
+    width: 200px;
+    cursor: pointer; /* Changes the mouse to a hand when hovering */
+}
+
+/* Styles the button for buying workers */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer; /* Hand icon when hovering over button */
+}
+
+/* Makes the text bigger */
+p {
+    font-size: 18px;
+}

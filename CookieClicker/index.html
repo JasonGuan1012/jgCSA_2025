@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <!-- This links the CSS file to style the page -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Cookie Clicker</h1>
+        <!-- This is the image of the cookie you'll click -->
+        <img src="https://i.ibb.co/37LFgWC/COOKIE.png" alt="Cookie" id="cookie" />
+        
+        <!-- These display the current count of cookies, workers, and cookies per second -->
+        <p>Cookies: <span id="cookieCount">0</span></p>
+        <p>Workers: <span id="workerCount">0</span></p>
+        <p>Cookies Per Second: <span id="cps">0</span></p>
+
+        <!-- Button to buy workers, costs 50 cookies -->
+        <button id="buyWorker">Buy Worker (Cost: 50 cookies)</button>
+
+        <!-- This is for the click sound that plays when you click the cookie -->
+        <audio id="clickSound" src="click-sound.mp3" preload="auto"></audio>
+    </div>
+
+    <!-- This links the JavaScript file for the game logic -->
+    <script src="script.js"></script>
+</body>
+</html>
