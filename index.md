@@ -7,7 +7,7 @@ hide: true
 
 # **My journey starts here.**
 
-
+<!-- Here's where I use JavaScript to put the image on my HomePage... -->
 <div id="image-container"></div>
 
 <script>
@@ -100,7 +100,7 @@ hide: true
   <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">Visit my blog</span></a>
 </button>
 <button>
-  <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">Click to Rate</span></a>
+  <a href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/03/RatingsBlog_IPYNB_2_.html" class="btn2"><span class="spn2">Click to Rate</span></a>
 </button>
 
 
