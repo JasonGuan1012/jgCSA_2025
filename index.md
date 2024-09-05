@@ -5,11 +5,29 @@ description: Home Page
 hide: true
 ---
 
-# My journey starts here.
+# **My journey starts here.**
 
-<img src="https://delnorte.powayusd.com/pics/school_logo.png" alt="My favorite image" width="300" height="300">
 
-## Visit my GitHub Blog
+<div id="image-container"></div>
+
+<script>
+    // Create an image element
+    const img = document.createElement('img');
+    
+    // Set the image source to the school logo
+    img.src = 'https://delnorte.powayusd.com/pics/school_logo.png';
+    
+    // You can add other settings, like an alt text or size
+    img.alt = 'Del Norte School Logo';
+    img.width = 300; // Adjust this if needed
+
+    // Add the image to the div with id "image-container"
+    document.getElementById('image-container').appendChild(img);
+</script>
+
+
+
+### Visit my GitHub Blog
 
 <br>
 
@@ -80,6 +98,9 @@ hide: true
 
 <button>
   <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">Visit my blog</span></a>
+</button>
+<button>
+  <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">Click to Rate</span></a>
 </button>
 
 
