@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 ## About me...
-My name is Borui Guan, but I got by jason.
+My name is Borui Guan, but I go by jason.
 - There you go of my picture on the right.
 <img src="https://i.ibb.co/2kGXKP7/2024-08-25-173425.png" alt="My picture" width="150">
 
