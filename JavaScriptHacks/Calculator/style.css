@@ -1,0 +1,69 @@
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
+
+table {
+    border: 1px solid #333;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+input[type="button"] {
+    width: 100%;
+    padding: 20px;
+    background-color: #4CAF50; /* Base color */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    box-shadow: 0 0 10px #88bc4c; /* Glow effect */
+    background-color: #88bc4c; /* Darker green for hover */
+}
+
+input[type="text"] {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    border: 2px solid #333;
+    text-align: right;
+    background-color: #fff;
+}
+
+#history {
+    border: 1px solid #333;
+    margin: 20px auto;
+    padding: 10px;
+    width: 80%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+#history p {
+    margin: 5px 0;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    color: #6e9a41; /* Darker green text color */
+}
+
+#history p:last-child {
+    border-bottom: none;
+}
+
+#history p::before {
+    content: "✓ ";
+    color: #88bc4c; /* Green checkmark */
+}
