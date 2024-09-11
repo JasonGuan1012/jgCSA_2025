@@ -199,9 +199,9 @@ hide: true
   <div class="dropdown-content">
     <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/devops/tools/home">JavaScript Hack</a>
     <div class="submenu">
-        <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Planning Page &nbsp; ▶</a>
+        <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/APCSAPlanning_IPYNB_2_.html">Planning Page &nbsp; ▶</a>
         <div class="submenu-content">
-            <a href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
+            <a href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
             <a href="https://jasonguan1012.github.io/jgCSA_2025/navigation/csa.html">Calendar</a>
         </div>
     </div>

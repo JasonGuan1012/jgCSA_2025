@@ -346,3 +346,153 @@ permalink: /about/
   </section>
 
 </div>
+<!-- Quiz Section -->
+<section class="quiz" style="margin-top: 50px; padding: 20px; background-color: #1a1a1a; border-radius: 15px;">
+  <h2 class="quiz-title">Quick Quiz</h2>
+  <form id="quizForm" class="quiz-form">
+    <p class="quiz-question">1. Where did I live from 2007 to 2019?</p>
+    <label><input type="radio" name="q1" value="USA"> USA</label><br>
+    <label><input type="radio" name="q1" value="China"> China</label><br>
+    <label><input type="radio" name="q1" value="Norway"> Norway</label><br><br>
+    <p class="quiz-question">2. Where do I dream of living?</p>
+    <label><input type="radio" name="q2" value="USA"> USA</label><br>
+    <label><input type="radio" name="q2" value="China"> China</label><br>
+    <label><input type="radio" name="q2" value="Norway"> Norway</label><br><br>
+    <button type="button" class="quiz-button" onclick="checkQuiz()">Submit</button>
+  </form>
+
+  <div id="result" class="quiz-result"></div>
+</section>
+
+<style>
+  .quiz-title {
+    color: #88bc4c;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .quiz-form {
+    color: #f0f0f0;
+    font-size: 18px;
+    animation: fadeInUp 1.5s ease-in-out;
+  }
+
+  .quiz-question {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #88bc4c;
+    font-weight: bold;
+  }
+
+  .quiz-button {
+    background-color: #88bc4c;
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+  }
+
+  .quiz-button:hover {
+    background-color: #76a742;
+  }
+
+  .quiz-result {
+    margin-top: 20px;
+    font-size: 22px;
+    color: #88bc4c;
+    text-align: center;
+    opacity: 0;
+    animation: fadeInResult 1.5s ease-in-out forwards;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInResult {
+    to {
+      opacity: 1;
+    }
+  }
+        
+  /* From Uiverse.io by mrtqzbek11 */ 
+  button {
+    width: 165px;
+    height: 62px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 1rem;
+    border: none;
+    position: relative;
+    background: #100720;
+    transition: 0.1s;
+  }
+  
+  button::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(136,188,76,1) 17.8%, rgba(54,99,27,1) 100.2% );
+    filter: blur(15px);
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  button:active {
+    transform: scale(0.9) rotate(3deg);
+    background: radial-gradient( circle farthest-corner at 10% 20%,  rgba(136,188,76,1) 17.8%, rgba(54,99,27,1) 100.2% );
+    transition: 0.5s;
+  }
+
+
+  /* Smooth Radio Buttons Styling */
+  input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #88bc4c;
+    transform: scale(1.5);
+  }
+
+  /* Form Spacing */
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+</style>
+
+<script>
+  function checkQuiz() {
+    let score = 0;
+    const answers = {
+      q1: "China",
+      q2: "Norway"
+    };
+    
+    const form = document.getElementById("quizForm");
+    if (form.q1.value === answers.q1) score++;
+    if (form.q2.value === answers.q2) score++;
+    
+    document.getElementById("result").textContent = "You scored " + score + " out of 2. :))";
+  }
+</script>
+
