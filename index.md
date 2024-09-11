@@ -197,12 +197,12 @@ hide: true
 <div class="paste-button">
   <button class="button">Menu &nbsp; ▼</button>
   <div class="dropdown-content">
-    <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/JavaScript_IPYNB_2_.html">JavaScript Hack</a>
+    <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/devops/tools/home">JavaScript Hack</a>
     <div class="submenu">
         <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Planning Page &nbsp; ▶</a>
         <div class="submenu-content">
-            <a href="https://example.com/submenu1">Things that I attempted</a>
-            <a href="https://example.com/submenu2">Accomplishment</a>
+            <a href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
+            <a href="https://example.com/submenu2">Calendar</a>
         </div>
     </div>
     <a id="bottom" href="https://jasonguan1012.github.io/jgCSA_2025/about/">About Pages</a>
