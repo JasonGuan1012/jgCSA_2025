@@ -16,7 +16,7 @@ permalink: /about/
 <!-- HTML Structure -->
 <div class="slideshow-container">
   <div class="mySlides">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg" alt="California Flag" class="slide-img">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg" alt="USA Flag" class="slide-img">
     <div class="text">
       <p>USA</p>
       <p>2019 - Present</p>
@@ -24,7 +24,7 @@ permalink: /about/
   </div>
 
   <div class="mySlides">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg" alt="Oregon Flag" class="slide-img">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg" alt="CA Flag" class="slide-img">
     <div class="text">
       <p>California</p>
       <p>2019 - Present</p>
@@ -32,7 +32,7 @@ permalink: /about/
   </div>
 
   <div class="mySlides">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="England Flag" class="slide-img">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="China Flag" class="slide-img">
     <div class="text">
       <p>China</p>
       <p>2007 - 2019</p>
@@ -40,7 +40,7 @@ permalink: /about/
   </div>
 
   <div class="mySlides">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg" alt="Hawaii Flag" class="slide-img">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg" alt="Norway Flag" class="slide-img">
     <div class="text">
       <p>Norway</p>
       <p>Dream</p>
@@ -211,22 +211,22 @@ permalink: /about/
     </ul>
     <div class="slideshow-container">
     <div class="mySlides">
-        <img src="https://i.ibb.co/kXzN8nK/image.png" alt="California Flag" class="slide-img">
+        <img src="https://i.ibb.co/TMkfZ5g/image.png" alt="Pop Funkos #1" class="slide-img">
         <div class="text">
         </div>
     </div>
     <div class="mySlides">
-        <img src="https://i.ibb.co/qrJP7c6/image.png" alt="Oregon Flag" class="slide-img">
+        <img src="https://i.ibb.co/qrJP7c6/image.png" alt="Pop Funkos #2" class="slide-img">
         <div class="text">
         </div>
     </div>
     <div class="mySlides">
-        <img src="https://i.ibb.co/QQKq6jH/image.png" alt="England Flag" class="slide-img">
+        <img src="https://i.ibb.co/QQKq6jH/image.png" alt="Pop Funkos #3" class="slide-img">
         <div class="text">
         </div>
     </div>
     <div class="mySlides">
-        <img src="https://i.ibb.co/85YWnT9/image.png" alt="Hawaii Flag" class="slide-img">
+        <img src="https://i.ibb.co/85YWnT9/image.png" alt="Pop Funkos #4" class="slide-img">
         <div class="text">
         </div>
     </div>
@@ -346,4 +346,3 @@ permalink: /about/
   </section>
 
 </div>
-
