@@ -119,61 +119,59 @@ hide: true
     <!-- History Section -->
     <div id="history"></div>
     <script>
-        // Function that displays value 
+        // Function to display clicked value in the input field
         function dis(val) {
             document.getElementById("result").value += val;
         }
+        // Function to handle keyboard input
         function myFunction(event) {
-            if (event.key == '0' || event.key == '1'
-                || event.key == '2' || event.key == '3'
-                || event.key == '4' || event.key == '5'
-                || event.key == '6' || event.key == '7'
-                || event.key == '8' || event.key == '9'
-                || event.key == '+' || event.key == '-'
-                || event.key == '*' || event.key == '/'
-                || event.key == '^' || event.key == '%'
-                || event.key == 'Enter') {
-                if (event.key == 'Enter') {
-                    solve();
-                } else {
-                    document.getElementById("result").value += event.key;
-                }
+            // Only allow numbers and basic operators
+            if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '^', '%'].includes(event.key)) {
+                document.getElementById("result").value += event.key;
+            }
+            // If 'Enter' is pressed, calculate the result
+            if (event.key === 'Enter') {
+                solve();
             }
         }
+        // Function to evaluate and solve the expression
+        function solve() {
+            let x = document.getElementById("result").value;
+            // Replace ^ with ** for exponentiation (math.js uses ** for powers)
+            x = x.replace(/\^/g, '**');
+            // Replace sqrt( with math.sqrt( for square roots
+            x = x.replace(/sqrt\(/g, 'math.sqrt(');
+            try {
+                // Evaluate the expression using math.js
+                let y = math.evaluate(x);
+                document.getElementById("result").value = y;
+                // Add the calculation to history
+                addHistory(x + ' = ' + y);
+            } catch (error) {
+                // If there's an error in evaluation, display "Error"
+                document.getElementById("result").value = "Error";
+            }
+        }
+        // Function to clear the display
+        function clr() {
+            document.getElementById("result").value = "";
+        }
+        // Function to add calculation to history
+        function addHistory(entry) {
+            let historyDiv = document.getElementById("history");
+            let p = document.createElement("p");
+            p.textContent = entry;
+            historyDiv.appendChild(p);
+            historyDiv.scrollTop = historyDiv.scrollHeight; // Scroll to the bottom
+        }
+        // Allow 'Enter' key to trigger calculation
         var cal = document.getElementById("calcu");
         cal.onkeyup = function (event) {
             if (event.keyCode === 13) {
                 solve();
             }
         }
-        // Function that evaluates the digit and returns result 
-        function solve() {
-            let x = document.getElementById("result").value;
-            // Replace ^ with ** for exponentiation
-            x = x.replace(/\^/g, '**');
-            // Replace sqrt( with math.sqrt( for square roots
-            x = x.replace(/sqrt\(/g, 'math.sqrt(');
-            try {
-                let y = math.evaluate(x);
-                document.getElementById("result").value = y;
-                // Add result to history
-                addHistory(x + ' = ' + y);
-            } catch (error) {
-                document.getElementById("result").value = "Error";
-            }
-        }
-        // Function to clear the display 
-        function clr() {
-            document.getElementById("result").value = "";
-        }
-        // Function to add calculation to history
-        function addHistory(entry) {
-            var historyDiv = document.getElementById("history");
-            var p = document.createElement("p");
-            p.textContent = entry;
-            historyDiv.appendChild(p);
-            historyDiv.scrollTop = historyDiv.scrollHeight; // Scroll to the bottom
-        }
     </script>
+
 </body>
 </html>

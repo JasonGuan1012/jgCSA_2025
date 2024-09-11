@@ -202,7 +202,7 @@ hide: true
         <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Planning Page &nbsp; ▶</a>
         <div class="submenu-content">
             <a href="https://jasonguan1012.github.io/jgCSA_2025/hacks/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
-            <a href="https://example.com/submenu2">Calendar</a>
+            <a href="https://jasonguan1012.github.io/jgCSA_2025/navigation/csa.html">Calendar</a>
         </div>
     </div>
     <a id="bottom" href="https://jasonguan1012.github.io/jgCSA_2025/about/">About Pages</a>
