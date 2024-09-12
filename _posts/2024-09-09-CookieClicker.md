@@ -74,7 +74,7 @@ hide: true
         const cpsDisplay = document.getElementById('cps');
         const buyWorkerBtn = document.getElementById('buyWorker');
         const clickSound = document.getElementById('clickSound');
-        // Update display
+        // Updating the display
         function updateDisplay() {
             cookieCountDisplay.textContent = cookieCount;
             workerCountDisplay.textContent = workerCount;
@@ -82,7 +82,7 @@ hide: true
         }
         // Play sound with error handling
         function playClickSound() {
-            clickSound.currentTime = 0; // Reset audio to the start
+            clickSound.currentTime = 0; // This resets the audio to the start
             clickSound.play().catch(error => {
                 console.log("Audio playback failed: ", error);
             });
@@ -93,12 +93,12 @@ hide: true
             playClickSound();
             updateDisplay();
         });
-        // Generate cookies automatically based on workers
+        // Generate cookies automatically based on the workers that the player bought
         function generateCookies() {
             cookieCount += cookiesPerSecond;
             updateDisplay();
         }     
-        // Buy workers
+        // Here's where you can buy workers
         buyWorkerBtn.addEventListener('click', function() {
             if (cookieCount >= workerCost) {
                 cookieCount -= workerCost;

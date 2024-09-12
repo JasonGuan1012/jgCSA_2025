@@ -31,7 +31,7 @@ hide: true
         input[type="button"] {
             width: 100%;
             padding: 20px;
-            background-color: #4CAF50; /* Base color */
+            background-color: #4CAF50; /* The Base color.... not working... */
             color: white;
             font-size: 20px;
             font-weight: bold;
@@ -40,8 +40,8 @@ hide: true
             transition: box-shadow 0.3s ease, background-color 0.3s ease;
         }
         input[type="button"]:hover {
-            box-shadow: 0 0 10px #88bc4c; /* Glow effect */
-            background-color: #88bc4c; /* Darker green for hover */
+            box-shadow: 0 0 10px #88bc4c; /* This is the Glow effect */
+            background-color: #88bc4c; /* The Darker green for hovering the button */
         }
         input[type="text"] {
             padding: 20px;
@@ -69,7 +69,7 @@ hide: true
             font-size: 18px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
-            color: #6e9a41; /* Darker green text color */
+            color: #6e9a41; /* The Darker green text color */
         }
         #history p:last-child {
             border-bottom: none;
@@ -116,20 +116,20 @@ hide: true
             <td><input type="button" value="+" onclick="dis('+')"></td>
         </tr>
     </table>
-    <!-- History Section -->
+    <!-- Here's teh History Section -->
     <div id="history"></div>
     <script>
-        // Function to display clicked value in the input field
+        // This is the function that displays clicked value in the input field
         function dis(val) {
             document.getElementById("result").value += val;
         }
         // Function to handle keyboard input
         function myFunction(event) {
-            // Only allow numbers and basic operators
+            // This will only allow numbers and basic operators
             if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '^', '%'].includes(event.key)) {
                 document.getElementById("result").value += event.key;
             }
-            // If 'Enter' is pressed, calculate the result
+            // If I pressed Enter, it will calculate the result
             if (event.key === 'Enter') {
                 solve();
             }
@@ -137,7 +137,7 @@ hide: true
         // Function to evaluate and solve the expression
         function solve() {
             let x = document.getElementById("result").value;
-            // Replace ^ with ** for exponentiation (math.js uses ** for powers)
+            // Replace ^ with ** for exponentiation (math.js uses ** for powers...)
             x = x.replace(/\^/g, '**');
             // Replace sqrt( with math.sqrt( for square roots
             x = x.replace(/sqrt\(/g, 'math.sqrt(');
@@ -145,26 +145,26 @@ hide: true
                 // Evaluate the expression using math.js
                 let y = math.evaluate(x);
                 document.getElementById("result").value = y;
-                // Add the calculation to history
+                // Adding the calculation to history
                 addHistory(x + ' = ' + y);
             } catch (error) {
-                // If there's an error in evaluation, display "Error"
+                // If there's an error in evaluation, it will display "Error"
                 document.getElementById("result").value = "Error";
             }
         }
-        // Function to clear the display
+        // The function that clears the display
         function clr() {
             document.getElementById("result").value = "";
         }
-        // Function to add calculation to history
+        // The function that adds the calculation to history below the calculator
         function addHistory(entry) {
             let historyDiv = document.getElementById("history");
             let p = document.createElement("p");
             p.textContent = entry;
             historyDiv.appendChild(p);
-            historyDiv.scrollTop = historyDiv.scrollHeight; // Scroll to the bottom
+            historyDiv.scrollTop = historyDiv.scrollHeight; // Scrolls to the bottom
         }
-        // Allow 'Enter' key to trigger calculation
+        // Allowing the "enter" key on keyboard also triggers the calculation
         var cal = document.getElementById("calcu");
         cal.onkeyup = function (event) {
             if (event.keyCode === 13) {
