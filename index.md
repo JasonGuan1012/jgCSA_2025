@@ -37,9 +37,9 @@ hide: true
         position: relative;
         display: inline-block;
         padding: 15px 30px;
-        border: 2px solid #fefefe;
+        border: 2px solid #88bc4c;
         text-transform: uppercase;
-        color: #fefefe;
+        color: #88bc4c;
         text-decoration: none;
         font-weight: 600;
         font-size: 20px;
@@ -53,7 +53,7 @@ hide: true
         left: -2px;
         width: calc(100% + 4px);
         height: calc(100% - -2px);
-        background-color: #212121;
+        background-color: #121212;
         transition: 0.3s ease-out;
         transform: scaleY(1);
     }
@@ -65,7 +65,7 @@ hide: true
         left: -2px;
         width: calc(100% + 4px);
         height: calc(100% - 50px);
-        background-color: #212121;
+        background-color: #121212;
         transition: 0.3s ease-out;
         transform: scaleY(1);
     }
@@ -81,7 +81,7 @@ hide: true
     }
 
     .btn2:hover {
-        border: 2px solid #fefefe;
+        border: 2px solid #88bc4c;
     }
 
     .btn2 span {
