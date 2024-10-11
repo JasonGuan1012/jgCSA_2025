@@ -97,7 +97,7 @@ hide: true
 </style>
 
 <button>
-  <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">Visit my blog</span></a>
+  <a href="https://github.com/JasonGuan1012/jgCSA_2025" class="btn2"><span class="spn2">My GitHub</span></a>
 </button>
 <button>
   <a href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/03/RatingsBlog_IPYNB_2_.html" class="btn2"><span class="spn2">Click to Rate</span></a>
