@@ -194,20 +194,45 @@ hide: true
 </style>
 
 
-<div class="paste-button">
-  <button class="button">Menu &nbsp; ▼</button>
-  <div class="dropdown-content">
-    <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/devops/tools/home">JavaScript Hack</a>
-    <div class="submenu">
+<div class="menu-container">
+  <div class="paste-button">
+    <button class="button">Sprint 1 &nbsp; ▼</button>
+    <div class="dropdown-content">
+      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/JavaScript_IPYNB_2_.html">JavaScript Hacks</a>
+      <div class="submenu">
         <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/APCSAPlanning_IPYNB_2_.html">Planning Page &nbsp; ▶</a>
         <div class="submenu-content">
-            <a href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
-            <a href="https://jasonguan1012.github.io/jgCSA_2025/navigation/csa.html">Calendar</a>
+          <a href="https://jasonguan1012.github.io/jgCSA_2025/devops/2024/09/01/APCSAPlanning_IPYNB_2_.html">Goals, challenges, Accom.</a>
+          <a href="https://jasonguan1012.github.io/jgCSA_2025/navigation/csa.html">Calendar</a>
         </div>
+      </div>
+      <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/2024/08/26/ToolHacksReviewTicket_IPYNB_2_.html">Tool Setup Review Ticket</a>
+      <a id="bottom" href="https://jasonguan1012.github.io/jgCSA_2025/about/">About Pages</a>
     </div>
-    <a id="bottom" href="https://jasonguan1012.github.io/jgCSA_2025/about/">About Pages</a>
+  </div>
+
+  <div class="paste-button">
+    <button class="button">Sprint 2 &nbsp; ▼</button>
+    <div class="dropdown-content">
+      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/2024/10/06/sprint2_plan_IPYNB_2_.html">Sprint 2 Review Ticket</a>
+      <div class="submenu">
+        <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/2024/10/11/Sprint2LiveReview_IPYNB_2_.html">Sprint 2 Summary</a>
+      </div>
+      <a id="bottom" href="https://nighthawkcoders.github.io/portfolio_2025/csa/unit7-p3/home">Our Team Teach</a>
+    </div>
   </div>
 </div>
+
+<style>
+  .menu-container {
+    display: flex;
+  }
+
+  .paste-button {
+    margin-right: 10px; /* Optional: adds some space between the menus */
+  }
+</style>
+
 
 <br>
 <br>
@@ -294,6 +319,13 @@ hide: true
     document.head.append(script);
 });
 </script>
-
+<br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br>
 </body>
 </html>
+
