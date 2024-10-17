@@ -214,7 +214,7 @@ hide: true
   <div class="paste-button">
     <button class="button">Sprint 2 &nbsp; ▼</button>
     <div class="dropdown-content">
-      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/2024/10/06/sprint2_plan_IPYNB_2_.html">Sprint 2 Review Ticket</a>
+      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/2024/10/10/sprint2_plan_IPYNB_2_.html">Sprint 2 Review Ticket</a>
       <div class="submenu">
         <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/2024/10/11/Sprint2LiveReview_IPYNB_2_.html">Sprint 2 Summary</a>
       </div>
