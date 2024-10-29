@@ -20,14 +20,94 @@ categories: ['DevOps']
     <!-- Add modern CSS framework -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        /* More visible RGB Border Animation for Dark Theme */
+        @keyframes cyber-border-glow {
+            0% { 
+                border-color: #ff0000;
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                           inset 0 0 15px rgba(255, 0, 0, 0.4);
+            }
+            33% { 
+                border-color: #0fff00;
+                box-shadow: 0 0 10px rgba(15, 255, 0, 0.7),
+                           inset 0 0 15px rgba(15, 255, 0, 0.4);
+            }
+            66% { 
+                border-color: #00ffff;
+                box-shadow: 0 0 10px rgba(0, 255, 255, 0.7),
+                           inset 0 0 15px rgba(0, 255, 255, 0.4);
+            }
+            100% { 
+                border-color: #ff0000;
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                           inset 0 0 15px rgba(255, 0, 0, 0.4);
+            }
+        }
+        /* Updated Dashboard Card Styling */
         .dashboard-card {
-            @apply bg-gray-800 rounded-lg p-4 shadow-lg;
+            background: rgba(17, 24, 39, 0.95); /* Darker background */
+            border: 2px solid;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            animation: cyber-border-glow 3s linear infinite;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        /* Different animation delays for wave effect */
+        .dashboard-card:nth-child(1) { animation-delay: 0s; }
+        .dashboard-card:nth-child(2) { animation-delay: 0.6s; }
+        .dashboard-card:nth-child(3) { animation-delay: 1.2s; }
+        .dashboard-card:nth-child(4) { animation-delay: 1.8s; }
+        .dashboard-card:nth-child(5) { animation-delay: 2.4s; }
+        /* Card title styling */
+        .dashboard-card h2 {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        /* Stats styling */
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
         }
         .stat-value {
-            @apply text-2xl font-bold text-green-400;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-        .stat-label {
-            @apply text-sm text-gray-400;
+        /* Hover effect */
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        /* Add corner accents */
+        .dashboard-card::before,
+        .dashboard-card::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid currentColor;
+            animation: cyber-border-glow 3s linear infinite;
+        }
+        .dashboard-card::before {
+            top: -2px;
+            left: -2px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+        .dashboard-card::after {
+            bottom: -2px;
+            right: -2px;
+            border-left: 0;
+            border-top: 0;
         }
         .chart-container {
             @apply bg-gray-800 rounded-lg p-4 mt-4;
@@ -75,10 +155,10 @@ categories: ['DevOps']
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="container mx-auto">
         <!-- Main Dashboard -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Wallet Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            <!-- Wallet -->
             <div class="dashboard-card">
-                <h2 class="text-xl mb-4">Wallet</h2>
+                <h2>Wallet</h2>
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">BTC Balance</div>
@@ -92,21 +172,21 @@ categories: ['DevOps']
             </div>
             <!-- Mining Stats -->
             <div class="dashboard-card">
-                <h2 class="text-xl mb-4">Mining Stats</h2>
+                <h2>Mining Stats</h2>
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">Hashrate</div>
                         <div class="stat-value" id="hashrate">0 MH/s</div>
                     </div>
                     <div>
-                        <div class="stat-label">Accepted Shares</div>
+                        <div class="stat-label">Shares</div>
                         <div class="stat-value" id="shares">0</div>
                     </div>
                 </div>
             </div>
-            <!-- Hardware Stats -->
+            <!-- Hardware -->
             <div class="dashboard-card">
-                <h2 class="text-xl mb-4">Hardware</h2>
+                <h2>Hardware</h2>
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">GPU Temperature</div>
@@ -120,25 +200,25 @@ categories: ['DevOps']
             </div>
             <!-- Profitability -->
             <div class="dashboard-card">
-                <h2 class="text-xl mb-4">Profitability</h2>
+                <h2>Profitability</h2>
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">24h Revenue</div>
                         <div class="stat-value" id="daily-revenue">$0.00</div>
                     </div>
                     <div>
-                        <div class="stat-label">Power Cost (24h)</div>
+                        <div class="stat-label">Power Cost</div>
                         <div class="stat-value text-red-400" id="power-cost">$0.00</div>
                     </div>
                 </div>
             </div>
             <!-- Bitcoin Market -->
             <div class="dashboard-card">
-                <h2 class="text-xl mb-4">Bitcoin Market</h2>
+                <h2>Bitcoin Market</h2>
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">BTC Price</div>
-                        <div class="stat-value" id="btc-price">$65,000.00</div>
+                        <div class="stat-value" id="btc-price">$0.00</div>
                     </div>
                     <div>
                         <div class="stat-label">24h Change</div>
