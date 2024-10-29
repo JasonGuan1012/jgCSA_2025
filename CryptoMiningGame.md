@@ -9,193 +9,712 @@ type: ccc
 categories: ['DevOps']
 ---
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <title>Crypto Mining Simulator</title>
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add modern CSS framework -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
+        .dashboard-card {
+            @apply bg-gray-800 rounded-lg p-4 shadow-lg;
         }
-        h1 {
-            text-align: center;
+        .stat-value {
+            @apply text-2xl font-bold text-green-400;
         }
-        #coins, #power {
-            font-weight: bold;
+        .stat-label {
+            @apply text-sm text-gray-400;
         }
-        button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 10px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+        .chart-container {
+            @apply bg-gray-800 rounded-lg p-4 mt-4;
+            height: 300px;
         }
-        button:hover {
-            background-color: #45a049; /* Darker green */
+        .gpu-shop-modal {
+            position: fixed;
+            inset: 0;  /* Same as top:0, right:0, bottom:0, left:0 */
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
         }
-        #gpu-shop {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0); /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
-            padding-top: 60px;
+        .gpu-shop-content {
+            background-color: #1f2937; /* Dark gray background */
+            width: 90%;
+            max-width: 900px;
+            max-height: 80vh;  /* 80% of viewport height */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            position: relative;
         }
-        #gpu-list {
-            list-style-type: none;
-            padding: 0;
+        .gpu-list-container {
+            overflow-y: auto;
+            max-height: calc(80vh - 4rem); /* Account for header */
+            padding-right: 1rem;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937;
         }
-        #gpu-list li {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #2e2e2e; /* Darker gray */
-            border-radius: 5px;
+        /* Webkit scrollbar styling */
+        .gpu-list-container::-webkit-scrollbar {
+            width: 8px;
         }
-        #gpu-list button {
-            margin-left: 10px;
-            background-color: #008CBA; /* Blue */
+        .gpu-list-container::-webkit-scrollbar-track {
+            background: #1f2937;
         }
-        #gpu-list button:hover {
-            background-color: #007bb5; /* Darker blue */
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
+        .gpu-list-container::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
-    <div id="game-container">
-        <button id="mine-btn">Start Mining</button>
-        <div id="stats">
-            <p>Coins: <span id="coins">0</span></p>
-            <p>Mining Power: <span id="power">1</span> coins per hour</p>
-            <p>Current GPU: <span id="current-gpu">NVIDIA GeForce GT 1030</span></p>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+    <div class="container mx-auto">
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Wallet Section -->
+            <div class="dashboard-card">
+                <h2 class="text-xl mb-4">Wallet</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">BTC Balance</div>
+                        <div class="stat-value" id="btc-balance">0.00000000</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">USD Value</div>
+                        <div class="stat-value" id="usd-value">$0.00</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mining Stats -->
+            <div class="dashboard-card">
+                <h2 class="text-xl mb-4">Mining Stats</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">Hashrate</div>
+                        <div class="stat-value" id="hashrate">0 MH/s</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">Accepted Shares</div>
+                        <div class="stat-value" id="shares">0</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Hardware Stats -->
+            <div class="dashboard-card">
+                <h2 class="text-xl mb-4">Hardware</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">GPU Temperature</div>
+                        <div class="stat-value" id="gpu-temp">0°C</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">Power Draw</div>
+                        <div class="stat-value" id="power-draw">0W</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Profitability -->
+            <div class="dashboard-card">
+                <h2 class="text-xl mb-4">Profitability</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">24h Revenue</div>
+                        <div class="stat-value" id="daily-revenue">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">Power Cost (24h)</div>
+                        <div class="stat-value text-red-400" id="power-cost">$0.00</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bitcoin Market -->
+            <div class="dashboard-card">
+                <h2 class="text-xl mb-4">Bitcoin Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">BTC Price</div>
+                        <div class="stat-value" id="btc-price">$65,000.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="btc-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button id="upgrade-btn">Upgrade Mining Power (10 Coins)</button>
-        <button id="shop-btn">Open GPU Shop</button>
+        <!-- Mining Controls -->
+        <div class="dashboard-card mt-4">
+            <div class="flex justify-between items-center">
+                <button id="start-mining" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                    Start Mining
+                </button>
+                <select id="pool-selection" class="bg-gray-700 rounded px-4 py-2">
+                    <option value="nicehash">NiceHash (2% fee, 4hr payout)</option>
+                    <option value="ethermine">Ethermine (1% fee, 24hr payout)</option>
+                    <option value="f2pool">F2Pool (2.5% fee, 12hr payout)</option>
+                </select>
+                <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                    GPU Shop
+                </button>
+            </div>
+        </div>
+        <!-- Performance Charts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="chart-container">
+                <canvas id="hashrate-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="profit-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="btc-price-chart"></canvas>
+            </div>
+        </div>
     </div>
     <!-- GPU Shop Modal -->
-    <div id="gpu-shop">
-        <div style="background-color: #444; padding: 20px; margin: 10% auto; width: 80%; border-radius: 10px;">
-            <span class="close" id="close-shop">&times;</span>
-            <h2>Buy a GPU</h2>
-            <ul id="gpu-list"></ul>
+    <div id="gpu-shop-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                    bg-gray-800 rounded-lg p-6 w-11/12 max-w-4xl max-h-[80vh] overflow-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">GPU Shop</h2>
+                <button id="close-shop" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="overflow-y-auto pr-2" style="max-height: calc(80vh - 100px);">
+                <div id="gpu-list" class="grid gap-4">
+                    <!-- GPUs will be inserted here -->
+                </div>
+            </div>
         </div>
     </div>
     <script>
-        // DOM elements
-        const mineButton = document.getElementById('mine-btn');
-        const upgradeButton = document.getElementById('upgrade-btn');
-        const shopButton = document.getElementById('shop-btn');
-        const closeShopButton = document.getElementById('close-shop');
-        const coinsElement = document.getElementById('coins');
-        const powerElement = document.getElementById('power');
-        const currentGpuElement = document.getElementById('current-gpu');
-        const gpuShopElement = document.getElementById('gpu-shop');
-        const gpuListElement = document.getElementById('gpu-list');
-        // Game data
-        let coins = 50;
-        let miningPower = 1;
-        let currentGpuIndex = 0;
-        // GPU data
-        const gpuList = [
-            { name: "NVIDIA GeForce GT 1030", price: 0, coinsPerHour: 1 },
-            { name: "NVIDIA GeForce GTX 1050", price: 50, coinsPerHour: 2 },
-            { name: "NVIDIA GeForce GTX 1050 Ti", price: 200, coinsPerHour: 3 },
-            { name: "NVIDIA GeForce GTX 1060", price: 500, coinsPerHour: 4 },
-            { name: "NVIDIA GeForce GTX 1660", price: 800, coinsPerHour: 5 },
-            { name: "NVIDIA GeForce GTX 1660 Ti", price: 1000, coinsPerHour: 6 },
-            { name: "NVIDIA GeForce RTX 2060", price: 1200, coinsPerHour: 7 },
-            { name: "NVIDIA GeForce RTX 2070", price: 1300, coinsPerHour: 8 },
-            { name: "NVIDIA GeForce RTX 2080", price: 1400, coinsPerHour: 9 },
-            { name: "NVIDIA GeForce RTX 2080 Ti", price: 1500, coinsPerHour: 10 },
-            { name: "NVIDIA GeForce RTX 3060", price: 1700, coinsPerHour: 12 },
-            { name: "NVIDIA GeForce RTX 3070", price: 1800, coinsPerHour: 14 },
-            { name: "NVIDIA GeForce RTX 3080", price: 1900, coinsPerHour: 16 },
-            { name: "NVIDIA GeForce RTX 3080 Ti", price: 2000, coinsPerHour: 18 },
-            { name: "NVIDIA GeForce RTX 3090", price: 2200, coinsPerHour: 20 },
-            { name: "NVIDIA GeForce RTX 4070", price: 2500, coinsPerHour: 19 },
-            { name: "NVIDIA GeForce RTX 4080", price: 3600, coinsPerHour: 21 },
-            { name: "NVIDIA GeForce RTX 4090", price: 4000, coinsPerHour: 25 },
-        ];
-        // Function to start mining
-        function startMining() {
-            setInterval(() => {
-                coins += miningPower; // Increase coins based on mining power
-                coinsElement.textContent = coins; // Update the UI with new coins count
-            }, 3600000); // Adjust to 1 hour for mining coins
+        // Game State
+        const gameState = {
+            btcBalance: 0,
+            usdBalance: 100, // Starting money
+            currentGpu: null, // Start with no GPU
+            miningActive: false,
+            poolFee: 0.02,
+            electricityRate: 0.12,
+            marketPrice: 40000,
+            difficulty: 1,
+            shares: 0,
+            temperature: 0,
+            powerDraw: 0,
+            hashrate: 0,
+            hashrateHistory: [],
+            profitHistory: [],
+            btcPrice: {
+                current: 65000,  // Starting at current approximate BTC price
+                history: [],
+                volatility: 0.02,  // 2% volatility
+                trend: 0,  // Current price trend
+            },
+            wallet: {
+                btc: 0,
+                usd: 100,
+            },
+        };
+        // Initialize charts
+        let hashrateChart;
+        let profitChart;
+        let btcPriceChart;
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            setupEventListeners();
+            updateDisplay();
+            const shopModal = document.getElementById('gpu-shop-modal');
+            shopModal.classList.add('hidden'); // Ensure shop is hidden on load
+            // Setup shop button click handler
+            const shopButton = document.getElementById('gpu-shop');
+            shopButton.addEventListener('click', () => {
+                shopModal.classList.remove('hidden');
+                renderGpuShop(); // Render GPUs when opening shop
+            });
+            // Setup close button handler
+            const closeButton = document.getElementById('close-shop');
+            closeButton.addEventListener('click', () => {
+                shopModal.classList.add('hidden');
+            });
+            // Close shop when clicking outside
+            shopModal.addEventListener('click', (e) => {
+                if (e.target === shopModal) {
+                    shopModal.classList.add('hidden');
+                }
+            });
+            // Close on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    shopModal.classList.add('hidden');
+                }
+            });
+        });
+        function initializeCharts() {
+            // Initialize Hashrate Chart
+            hashrateChart = new Chart(
+                document.getElementById('hashrate-chart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Hashrate (MH/s)',
+                            data: [],
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                }
+            );
+            // Initialize Profit Chart
+            profitChart = new Chart(
+                document.getElementById('profit-chart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Profit (USD)',
+                            data: [],
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                }
+            );
+            // Bitcoin Price Chart
+            btcPriceChart = new Chart(
+                document.getElementById('btc-price-chart').getContext('2d'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Bitcoin Price (USD)',
+                            data: [],
+                            borderColor: 'rgb(247, 147, 26)', // Bitcoin orange
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.parsed.y.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
         }
-        // Function to upgrade mining power
-        function upgradeMiningPower() {
-            if (coins >= 10) {
-                miningPower += 1; // Increase mining power
-                coins -= 10; // Deduct coins for the upgrade
-                coinsElement.textContent = coins; // Update the UI with new coins count
-                powerElement.textContent = miningPower; // Update the UI with new mining power
+        function setupEventListeners() {
+            // Mining button
+            const mineButton = document.getElementById('start-mining');
+            mineButton.addEventListener('click', toggleMining);
+            // Shop button
+            const shopButton = document.getElementById('gpu-shop');
+            shopButton.addEventListener('click', () => {
+                document.getElementById('gpu-shop-modal').classList.remove('hidden');
+                renderGpuShop();
+            });
+            // Close shop button
+            const closeShopButton = document.getElementById('close-shop');
+            closeShopButton.addEventListener('click', () => {
+                document.getElementById('gpu-shop-modal').classList.add('hidden');
+            });
+        }
+        function toggleMining() {
+            if (!gameState.currentGpu) {
+                alert('Please purchase a GPU first!');
+                return;
+            }
+            gameState.miningActive = !gameState.miningActive;
+            const mineButton = document.getElementById('start-mining');
+            if (gameState.miningActive) {
+                mineButton.textContent = 'Stop Mining';
+                mineButton.className = 'bg-red-500 hover:bg-red-600 px-4 py-2 rounded';
+                startMining();
             } else {
-                alert("Not enough coins for upgrade");
+                mineButton.textContent = 'Start Mining';
+                mineButton.className = 'bg-green-500 hover:bg-green-600 px-4 py-2 rounded';
+                stopMining();
             }
         }
-        // Function to open GPU shop
-        function openGpuShop() {
-            gpuListElement.innerHTML = ''; // Clear existing list
-            gpuList.forEach((gpu, index) => {
-                const li = document.createElement('li');
-                li.textContent = `${gpu.name} - ${gpu.price} coins`;
-                const buyButton = document.createElement('button');
-                buyButton.textContent = "Buy";
-                buyButton.onclick = () => buyGpu(index);
-                li.appendChild(buyButton);
-                gpuListElement.appendChild(li);
-            });
-            gpuShopElement.style.display = "block"; // Show the GPU shop
+        function startMining() {
+            if (!window.miningInterval) {
+                window.miningInterval = setInterval(() => {
+                    calculateMining();
+                    updateDisplay();
+                    updateCharts();
+                }, 1000);
+            }
         }
-        // Function to buy a GPU
+        function stopMining() {
+            if (window.miningInterval) {
+                clearInterval(window.miningInterval);
+                window.miningInterval = null;
+            }
+        }
+        function calculateMining() {
+            if (!gameState.currentGpu) return;
+            // Calculate mining rewards
+            const hashPower = gameState.currentGpu.hashRate;
+            gameState.hashrate = hashPower;
+            // Simulate finding shares
+            if (Math.random() < hashPower / gameState.difficulty / 1000) {
+                gameState.shares++;
+                gameState.btcBalance += (6.25 / 100000) * (1 - gameState.poolFee); // Simplified BTC reward
+            }
+            // Update temperature and power
+            gameState.temperature = Math.min(90, 40 + Math.random() * 30);
+            gameState.powerDraw = gameState.currentGpu.powerConsumption * (1 + Math.random() * 0.1);
+            // Calculate power cost
+            const hourlyPowerCost = (gameState.powerDraw / 1000) * gameState.electricityRate;
+            gameState.usdBalance -= hourlyPowerCost / 3600;
+        }
+        function updateCharts() {
+            const now = new Date().toLocaleTimeString();
+            // Update hashrate chart
+            hashrateChart.data.labels.push(now);
+            hashrateChart.data.datasets[0].data.push(gameState.hashrate);
+            if (hashrateChart.data.labels.length > 20) {
+                hashrateChart.data.labels.shift();
+                hashrateChart.data.datasets[0].data.shift();
+            }
+            hashrateChart.update();
+            // Update profit chart
+            const currentProfit = gameState.btcBalance * gameState.marketPrice;
+            profitChart.data.labels.push(now);
+            profitChart.data.datasets[0].data.push(currentProfit);
+            if (profitChart.data.labels.length > 20) {
+                profitChart.data.labels.shift();
+                profitChart.data.datasets[0].data.shift();
+            }
+            profitChart.update();
+        }
+        function renderGpuShop() {
+            const gpuListElement = document.getElementById('gpu-list');
+            gpuListElement.innerHTML = ''; // Clear existing content
+            gpuList.forEach((gpu, index) => {
+                // Calculate daily estimates
+                const dailyRevenue = calculateDailyRevenue(gpu);
+                const dailyPowerCost = calculateDailyPowerCost(gpu);
+                const dailyProfit = dailyRevenue - dailyPowerCost;
+                const roi = gpu.price / dailyProfit; // Days to ROI
+                const gpuCard = document.createElement('div');
+                gpuCard.className = 'bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition-colors';
+                gpuCard.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-white">${gpu.name}</h3>
+                            <div class="grid grid-cols-2 gap-4 mt-2">
+                                <div class="text-sm">
+                                    <p class="text-gray-400">Performance</p>
+                                    <p class="text-white">⚡ ${gpu.hashRate} MH/s</p>
+                                    <p class="text-white">🔌 ${gpu.powerConsumption}W</p>
+                                    <p class="text-white">🌡️ ${gpu.temp}°C</p>
+                                </div>
+                                <div class="text-sm">
+                                    <p class="text-gray-400">Daily Estimates</p>
+                                    <p class="text-green-400">💰 $${dailyRevenue.toFixed(2)}</p>
+                                    <p class="text-red-400">💡 -$${dailyPowerCost.toFixed(2)}</p>
+                                    <p class="text-blue-400">📈 $${dailyProfit.toFixed(2)}</p>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-sm">
+                                <p class="text-gray-400">Efficiency: ${gpu.efficiency.toFixed(3)} MH/W</p>
+                                <p class="text-gray-400">ROI: ${roi.toFixed(1)} days</p>
+                            </div>
+                        </div>
+                        <div class="text-right ml-4">
+                            <p class="text-xl font-bold ${gpu.price === 0 ? 'text-green-400' : 'text-white'}">
+                                ${gpu.price === 0 ? 'FREE' : '$' + gpu.price.toLocaleString()}
+                            </p>
+                            <button onclick="buyGpu(${index})" 
+                                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mt-2 transition-colors">
+                                ${gpu.price === 0 ? 'Get Free' : 'Buy'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gpuListElement.appendChild(gpuCard);
+            });
+        }
         function buyGpu(index) {
             const gpu = gpuList[index];
-            if (coins >= gpu.price) {
-                coins -= gpu.price; // Deduct coins for the purchase
-                coinsElement.textContent = coins; // Update coins UI
-                currentGpuIndex = index; // Update current GPU index
-                currentGpuElement.textContent = gpu.name; // Update current GPU display
-                miningPower = gpu.coinsPerHour; // Set new mining power based on GPU
-                powerElement.textContent = miningPower; // Update mining power UI
-                gpuShopElement.style.display = "none"; // Close the shop
+            if (gameState.usdBalance >= gpu.price) {
+                gameState.usdBalance -= gpu.price;
+                gameState.currentGpu = gpu;
+                document.getElementById('gpu-shop-modal').classList.add('hidden');
+                document.getElementById('current-gpu').textContent = gpu.name;
+                updateDisplay();
+                alert(`Successfully acquired ${gpu.name}!`);
             } else {
-                alert("Not enough coins to buy this GPU");
+                alert('Insufficient funds!');
             }
         }
-        // Event listeners for buttons
-        mineButton.addEventListener('click', startMining);
-        upgradeButton.addEventListener('click', upgradeMiningPower);
-        shopButton.addEventListener('click', openGpuShop);
-        closeShopButton.addEventListener('click', () => gpuShopElement.style.display = "none");
+        function updateDisplay() {
+            document.getElementById('btc-balance').textContent = gameState.btcBalance.toFixed(8);
+            document.getElementById('usd-value').textContent = `$${(gameState.btcBalance * gameState.marketPrice).toFixed(2)}`;
+            document.getElementById('hashrate').textContent = `${gameState.currentGpu ? gameState.currentGpu.hashRate.toFixed(2) : '0'} MH/s`;
+            document.getElementById('shares').textContent = gameState.shares;
+            document.getElementById('gpu-temp').textContent = `${gameState.temperature.toFixed(1)}°C`;
+            document.getElementById('power-draw').textContent = `${gameState.powerDraw.toFixed(0)}W`;
+            // Calculate daily estimates
+            if (gameState.currentGpu) {
+                const dailyBtc = (gameState.btcBalance * 24);
+                const dailyRevenue = dailyBtc * gameState.marketPrice;
+                const dailyPowerCost = (gameState.powerDraw / 1000) * gameState.electricityRate * 24; 
+                document.getElementById('daily-revenue').textContent = `$${dailyRevenue.toFixed(2)}`;
+                document.getElementById('power-cost').textContent = `$${dailyPowerCost.toFixed(2)}`;
+            }
+        }
+        // Market price updates
+        setInterval(() => {
+            gameState.marketPrice *= (1 + (Math.random() * 0.002 - 0.001));
+            gameState.difficulty *= (Math.random() < 0.1) ? (1 + (Math.random() * 0.1 - 0.05)) : 1;
+            if (gameState.miningActive) updateDisplay();
+        }, 5000);
+        // Add Bitcoin price simulation
+        function updateBitcoinPrice() {
+            const btc = gameState.btcPrice;
+            // Update trend
+            if (Math.random() < 0.1) { // 10% chance to change trend
+                btc.trend = Math.random() * 2 - 1; // Random trend between -1 and 1
+            }
+            // Calculate price change
+            const change = (
+                (Math.random() * 2 - 1) * btc.volatility + // Random volatility
+                btc.trend * btc.volatility // Trend influence
+            );
+            // Update price
+            btc.current *= (1 + change);
+            // Keep price within realistic bounds
+            btc.current = Math.max(btc.current, 1000);
+            btc.current = Math.min(btc.current, 100000);
+            // Store price history
+            btc.history.push({
+                timestamp: Date.now(),
+                price: btc.current
+            });
+            // Keep only last 24 hours of history
+            const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+            btc.history = btc.history.filter(h => h.timestamp > oneDayAgo);
+            // Update chart
+            updateBitcoinChart();
+            // Update mining profitability
+            updateMiningProfitability();
+        }
+        // Update Bitcoin price chart
+        function updateBitcoinChart() {
+            const chart = btcPriceChart;
+            const now = new Date().toLocaleTimeString();
+            chart.data.labels.push(now);
+            chart.data.datasets[0].data.push(gameState.btcPrice.current);
+            // Keep last 20 data points
+            if (chart.data.labels.length > 20) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
+        }
+        // Add mining profitability calculation
+        function updateMiningProfitability() {
+            if (!gameState.currentGpu) return;
+            const btcPrice = gameState.btcPrice.current;
+            const hashrate = gameState.currentGpu.hashRate;
+            const powerCost = (gameState.currentGpu.powerConsumption / 1000) * gameState.electricityRate * 24;
+            // Calculate daily BTC mining estimate
+            const dailyBtc = (hashrate * 86400) / (gameState.difficulty * 1e12);
+            const dailyRevenue = dailyBtc * btcPrice;
+            const dailyProfit = dailyRevenue - powerCost;
+            // Update UI
+            document.getElementById('btc-price').textContent = `$${btcPrice.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
+            document.getElementById('daily-revenue').textContent = `$${dailyRevenue.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
+            document.getElementById('daily-profit').textContent = `$${dailyProfit.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
+        }
+        const gpuList = [
+            // Free Starter GPU
+            { 
+                name: "NVIDIA GeForce GT 1030", 
+                price: 0, 
+                hashRate: 1.5,         // MH/s
+                powerConsumption: 30,  // Watts
+                efficiency: 0.05,      // MH/s per watt
+                temp: 65              // °C
+            },
+            // Budget GPUs ($50-500)
+            { 
+                name: "NVIDIA GeForce GTX 1050", 
+                price: 150, 
+                hashRate: 14, 
+                powerConsumption: 75,
+                efficiency: 0.19,
+                temp: 67
+            },
+            { 
+                name: "AMD RX 570 8GB", 
+                price: 250, 
+                hashRate: 28, 
+                powerConsumption: 120,
+                efficiency: 0.23,
+                temp: 70
+            },
+            { 
+                name: "NVIDIA GeForce GTX 1060 6GB", 
+                price: 400, 
+                hashRate: 22, 
+                powerConsumption: 120,
+                efficiency: 0.18,
+                temp: 68
+            },
+            // Mid-Range GPUs ($500-1500)
+            { 
+                name: "NVIDIA GeForce GTX 1660 SUPER", 
+                price: 800, 
+                hashRate: 31, 
+                powerConsumption: 125,
+                efficiency: 0.25,
+                temp: 69
+            },
+            { 
+                name: "AMD RX 5600 XT", 
+                price: 1000, 
+                hashRate: 40, 
+                powerConsumption: 150,
+                efficiency: 0.27,
+                temp: 71
+            },
+            { 
+                name: "NVIDIA RTX 2060", 
+                price: 1200, 
+                hashRate: 32, 
+                powerConsumption: 160,
+                efficiency: 0.20,
+                temp: 70
+            },
+            { 
+                name: "NVIDIA RTX 2070", 
+                price: 1400, 
+                hashRate: 42, 
+                powerConsumption: 175,
+                efficiency: 0.24,
+                temp: 71
+            },
+            // High-End GPUs ($1500-3000)
+            { 
+                name: "NVIDIA RTX 3060 Ti", 
+                price: 1700, 
+                hashRate: 60, 
+                powerConsumption: 200,
+                efficiency: 0.30,
+                temp: 70
+            },
+            { 
+                name: "NVIDIA RTX 3070", 
+                price: 2000, 
+                hashRate: 62, 
+                powerConsumption: 220,
+                efficiency: 0.28,
+                temp: 71
+            },
+            { 
+                name: "AMD RX 6800 XT", 
+                price: 2300, 
+                hashRate: 64, 
+                powerConsumption: 300,
+                efficiency: 0.21,
+                temp: 73
+            },
+            { 
+                name: "NVIDIA RTX 3080", 
+                price: 2800, 
+                hashRate: 98, 
+                powerConsumption: 320,
+                efficiency: 0.31,
+                temp: 72
+            },
+            // Premium GPUs ($3000+)
+            { 
+                name: "NVIDIA RTX 4070", 
+                price: 3200, 
+                hashRate: 100, 
+                powerConsumption: 285,
+                efficiency: 0.35,
+                temp: 71
+            },
+            { 
+                name: "AMD RX 7900 XTX", 
+                price: 3500, 
+                hashRate: 110, 
+                powerConsumption: 355,
+                efficiency: 0.31,
+                temp: 73
+            },
+            { 
+                name: "NVIDIA RTX 4080", 
+                price: 3800, 
+                hashRate: 130, 
+                powerConsumption: 320,
+                efficiency: 0.41,
+                temp: 73
+            },
+            { 
+                name: "NVIDIA RTX 4090", 
+                price: 4000, 
+                hashRate: 140, 
+                powerConsumption: 450,
+                efficiency: 0.31,
+                temp: 75
+            }
+        ];
+        // Helper functions for calculations
+        function calculateDailyRevenue(gpu) {
+            const btcPerDay = (gpu.hashRate * 86400) / (gameState.difficulty * 1e12);
+            return btcPerDay * gameState.btcPrice.current;
+        }
+        function calculateDailyPowerCost(gpu) {
+            const dailyKwh = (gpu.powerConsumption * 24) / 1000;
+            return dailyKwh * gameState.electricityRate;
+        }
     </script>
 </body>
 </html>
