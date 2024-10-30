@@ -1,5 +1,5 @@
 ---
-toc: True
+toc: false
 comments: True
 layout: post
 title: Crypto Mining Game
@@ -9,7 +9,6 @@ type: ccc
 categories: ['DevOps']
 ---
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
