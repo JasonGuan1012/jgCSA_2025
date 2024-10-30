@@ -6,7 +6,6 @@ title: Crypto Mining Game
 description: Crypto Mining Game for PBL tri 1 Project
 courses: {csa: {week: 9}}
 type: ccc
-categories: ['DevOps']
 ---
 
 <html lang="en">
@@ -239,6 +238,94 @@ categories: ['DevOps']
                            inset 0 0 20px rgba(255, 0, 0, 0.1);
                 transform: scale(1);
             }
+        }
+        /* Add these new styles to your existing <style> section */
+        /* GPU Card Base Style */
+        .gpu-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: rgba(17, 24, 39, 0.95);
+        }
+        /* Starter GPU - Green glow */
+        .gpu-card.starter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            border-color: rgba(0, 255, 0, 0.5);
+        }
+        /* Budget GPU - Blue glow */
+        .gpu-card.budget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 128, 255, 0.3);
+            border-color: rgba(0, 128, 255, 0.5);
+        }
+        /* Mid-Range GPU - Purple glow */
+        .gpu-card.mid-range:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+            border-color: rgba(147, 51, 234, 0.5);
+        }
+        /* High-End GPU - Orange glow */
+        .gpu-card.high-end:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+            border-color: rgba(255, 165, 0, 0.5);
+        }
+        /* Premium GPU - Red glow */
+        .gpu-card.premium:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            border-color: rgba(255, 0, 0, 0.5);
+        }
+        /* GPU Card Hover Effects - Updated for your structure */
+        .gpu-card {
+            background: rgba(26, 31, 46, 0.95);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        /* Free Starter GPU */
+        .gpu-card:has(h3:contains("NVIDIA GeForce GT 1030")):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); /* Green glow */
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+        /* Budget GPUs */
+        .gpu-card:has(h3[class*="text-blue-400"]):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); /* Blue glow */
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        /* Mid-Range GPUs */
+        .gpu-card:has(h3[class*="text-purple-400"]):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); /* Purple glow */
+            border-color: rgba(147, 51, 234, 0.5);
+        }
+        /* High-End GPUs */
+        .gpu-card:has(h3[class*="text-orange-400"]):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.3); /* Orange glow */
+            border-color: rgba(251, 146, 60, 0.5);
+        }
+        /* Premium GPUs */
+        .gpu-card:has(h3[class*="text-red-400"]):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); /* Red glow */
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        /* Add glass effect */
+        .gpu-card {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        /* Smooth transitions */
+        .gpu-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Add subtle animation on hover */
+        .gpu-card:hover {
+            transform: translateY(-5px) scale(1.02);
         }
     </style>
 </head>
@@ -673,50 +760,81 @@ categories: ['DevOps']
         }
         function renderGpuShop() {
             const gpuListElement = document.getElementById('gpu-list');
-            gpuListElement.innerHTML = ''; // Clear existing content
-            gpuList.forEach((gpu, index) => {
-                // Calculate daily estimates
-                const dailyRevenue = calculateDailyRevenue(gpu);
-                const dailyPowerCost = calculateDailyPowerCost(gpu);
-                const dailyProfit = dailyRevenue - dailyPowerCost;
-                const roi = gpu.price / dailyProfit; // Days to ROI
-                const gpuCard = document.createElement('div');
-                gpuCard.className = 'bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition-colors';
-                gpuCard.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-white">${gpu.name}</h3>
-                            <div class="grid grid-cols-2 gap-4 mt-2">
-                                <div class="text-sm">
-                                    <p class="text-gray-400">Performance</p>
-                                    <p class="text-white">⚡ ${gpu.hashRate} MH/s</p>
-                                    <p class="text-white">🔌 ${gpu.powerConsumption}W</p>
-                                    <p class="text-white">🌡️ ${gpu.temp}°C</p>
+            gpuListElement.innerHTML = '';
+            // Define categories
+            const categories = {
+                'Free Starter GPU': gpuList.filter(gpu => gpu.price === 0),
+                '💎 Budget GPUs ($50-500)': gpuList.filter(gpu => gpu.price > 0 && gpu.price <= 500),
+                '💎 Mid-Range GPUs ($500-1500)': gpuList.filter(gpu => gpu.price > 500 && gpu.price <= 1500),
+                '💎 High-End GPUs ($1500-3000)': gpuList.filter(gpu => gpu.price > 1500 && gpu.price <= 3000),
+                '💎 Premium GPUs ($3000+)': gpuList.filter(gpu => gpu.price > 3000)
+            };
+            // Create sections for each category
+            Object.entries(categories).forEach(([categoryName, gpus]) => {
+                if (gpus.length === 0) return; // Skip empty categories
+                // Add category header
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'text-xl font-bold mb-4 mt-6';
+                // Set header color based on category
+                let headerColor;
+                if (categoryName.includes('Free')) headerColor = 'text-green-400';
+                else if (categoryName.includes('Budget')) headerColor = 'text-blue-400';
+                else if (categoryName.includes('Mid-Range')) headerColor = 'text-purple-400';
+                else if (categoryName.includes('High-End')) headerColor = 'text-orange-400';
+                else headerColor = 'text-red-400';
+                categoryHeader.className += ` ${headerColor}`;
+                categoryHeader.innerHTML = categoryName;
+                gpuListElement.appendChild(categoryHeader);
+                // Add divider line
+                const divider = document.createElement('div');
+                divider.className = `border-b ${headerColor.replace('text', 'border')} mb-4`;
+                gpuListElement.appendChild(divider);
+                // Add GPUs in this category
+                gpus.forEach(gpu => {
+                    // Your existing GPU card creation code here
+                    const dailyRevenue = calculateDailyRevenue(gpu);
+                    const dailyPowerCost = calculateDailyPowerCost(gpu);
+                    const dailyProfit = dailyRevenue - dailyPowerCost;
+                    const roi = gpu.price / dailyProfit;
+                    const gpuCard = document.createElement('div');
+                    gpuCard.className = 'gpu-card mb-4';
+                    // Rest of your existing card HTML...
+                    gpuCard.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold ${headerColor}">${gpu.name}</h3>
+                                <div class="grid grid-cols-2 gap-4 mt-2">
+                                    <div class="text-sm">
+                                        <p class="text-gray-400">Performance</p>
+                                        <p class="text-white">⚡ ${gpu.hashRate} MH/s</p>
+                                        <p class="text-white">🔌 ${gpu.powerConsumption}W</p>
+                                        <p class="text-white">🌡️ ${gpu.temp}°C</p>
+                                    </div>
+                                    <div class="text-sm">
+                                        <p class="text-gray-400">Daily Estimates</p>
+                                        <p class="text-green-400">💰 $${dailyRevenue.toFixed(2)}</p>
+                                        <p class="text-red-400">💡 -$${dailyPowerCost.toFixed(2)}</p>
+                                        <p class="text-blue-400">📈 $${dailyProfit.toFixed(2)}</p>
+                                    </div>
                                 </div>
-                                <div class="text-sm">
-                                    <p class="text-gray-400">Daily Estimates</p>
-                                    <p class="text-green-400">💰 $${dailyRevenue.toFixed(2)}</p>
-                                    <p class="text-red-400">💡 -$${dailyPowerCost.toFixed(2)}</p>
-                                    <p class="text-blue-400">📈 $${dailyProfit.toFixed(2)}</p>
+                                <div class="mt-2 text-sm">
+                                    <p class="text-gray-400">Efficiency: ${gpu.efficiency.toFixed(3)} MH/W</p>
+                                    <p class="text-gray-400">ROI: ${roi.toFixed(1)} days</p>
                                 </div>
                             </div>
-                            <div class="mt-2 text-sm">
-                                <p class="text-gray-400">Efficiency: ${gpu.efficiency.toFixed(3)} MH/W</p>
-                                <p class="text-gray-400">ROI: ${roi.toFixed(1)} days</p>
+                            <div class="text-right ml-4">
+                                <p class="text-xl font-bold ${headerColor}">
+                                    ${gpu.price === 0 ? 'FREE' : '$' + gpu.price.toLocaleString()}
+                                </p>
+                                <button onclick="buyGpu(${gpuList.indexOf(gpu)})" 
+                                        class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded mt-2">
+                                    ${gpu.price === 0 ? 'Get Free' : 'Buy'}
+                                </button>
                             </div>
                         </div>
-                        <div class="text-right ml-4">
-                            <p class="text-xl font-bold ${gpu.price === 0 ? 'text-green-400' : 'text-white'}">
-                                ${gpu.price === 0 ? 'FREE' : '$' + gpu.price.toLocaleString()}
-                            </p>
-                            <button onclick="buyGpu(${index})" 
-                                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mt-2 transition-colors">
-                                ${gpu.price === 0 ? 'Get Free' : 'Buy'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-                gpuListElement.appendChild(gpuCard);
+                    `;
+                    gpuListElement.appendChild(gpuCard);
+                });
             });
         }
         function buyGpu(index) {
@@ -855,7 +973,7 @@ categories: ['DevOps']
                 temp: 71
             },
             { 
-                name: "AMD RX 6800 XT", 
+                name: "NVIDIA RTX 3080", 
                 price: 2300, 
                 hashRate: 64, 
                 powerConsumption: 300,
@@ -863,7 +981,7 @@ categories: ['DevOps']
                 temp: 73
             },
             { 
-                name: "NVIDIA RTX 3080", 
+                name: "NVIDIA RTX 3090", 
                 price: 2800, 
                 hashRate: 98, 
                 powerConsumption: 320,
