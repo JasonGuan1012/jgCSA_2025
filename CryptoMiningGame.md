@@ -62,7 +62,7 @@ categories: ['DevOps']
         /* Card title styling */
         .dashboard-card h2 {
             color: white;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: bold;
             margin-bottom: 1rem;
             text-transform: uppercase;
@@ -77,7 +77,7 @@ categories: ['DevOps']
         }
         .stat-value {
             color: white;
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
