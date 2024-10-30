@@ -55,10 +55,10 @@ categories: ['DevOps']
         }
         /* Different animation delays for wave effect */
         .dashboard-card:nth-child(1) { animation-delay: 0s; }
-        .dashboard-card:nth-child(2) { animation-delay: 1.2s; }
-        .dashboard-card:nth-child(3) { animation-delay: 2.4s; }
-        .dashboard-card:nth-child(4) { animation-delay: 3.6s; }
-        .dashboard-card:nth-child(5) { animation-delay: 4.8s; }
+        .dashboard-card:nth-child(2) { animation-delay: 0.5s; }
+        .dashboard-card:nth-child(3) { animation-delay: 1s; }
+        .dashboard-card:nth-child(4) { animation-delay: 1.5s; }
+        .dashboard-card:nth-child(5) { animation-delay: 2s; }
         /* Card title styling */
         .dashboard-card h2 {
             color: white;
