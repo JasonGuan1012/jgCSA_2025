@@ -19,45 +19,46 @@ categories: ['DevOps']
     <!-- Add modern CSS framework -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* More visible RGB Border Animation for Dark Theme */
+        /* More subtle RGB Border Animation for Dark Theme */
         @keyframes cyber-border-glow {
             0% { 
-                border-color: #ff0000;
-                box-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
-                           inset 0 0 15px rgba(255, 0, 0, 0.4);
+                border-color: rgba(255, 0, 0, 0.5);  /* Softer red */
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.3),
+                           inset 0 0 15px rgba(255, 0, 0, 0.2);
             }
             33% { 
-                border-color: #0fff00;
-                box-shadow: 0 0 10px rgba(15, 255, 0, 0.7),
-                           inset 0 0 15px rgba(15, 255, 0, 0.4);
+                border-color: rgba(15, 255, 0, 0.5);  /* Softer green */
+                box-shadow: 0 0 10px rgba(15, 255, 0, 0.3),
+                           inset 0 0 15px rgba(15, 255, 0, 0.2);
             }
             66% { 
-                border-color: #00ffff;
-                box-shadow: 0 0 10px rgba(0, 255, 255, 0.7),
-                           inset 0 0 15px rgba(0, 255, 255, 0.4);
+                border-color: rgba(0, 255, 255, 0.5);  /* Softer cyan */
+                box-shadow: 0 0 10px rgba(0, 255, 255, 0.3),
+                           inset 0 0 15px rgba(0, 255, 255, 0.2);
             }
             100% { 
-                border-color: #ff0000;
-                box-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
-                           inset 0 0 15px rgba(255, 0, 0, 0.4);
+                border-color: rgba(255, 0, 0, 0.5);  /* Back to softer red */
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.3),
+                           inset 0 0 15px rgba(255, 0, 0, 0.2);
             }
         }
         /* Updated Dashboard Card Styling */
         .dashboard-card {
-            background: rgba(17, 24, 39, 0.95); /* Darker background */
-            border: 2px solid;
+            background: rgba(17, 24, 39, 0.95);
+            border: 1.5px solid;
             border-radius: 0.75rem;
             padding: 1.25rem;
-            animation: cyber-border-glow 3s linear infinite;
+            animation: rgb-breathe 6s ease-in-out infinite;
             position: relative;
             backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
         /* Different animation delays for wave effect */
         .dashboard-card:nth-child(1) { animation-delay: 0s; }
-        .dashboard-card:nth-child(2) { animation-delay: 0.6s; }
-        .dashboard-card:nth-child(3) { animation-delay: 1.2s; }
-        .dashboard-card:nth-child(4) { animation-delay: 1.8s; }
-        .dashboard-card:nth-child(5) { animation-delay: 2.4s; }
+        .dashboard-card:nth-child(2) { animation-delay: 1.2s; }
+        .dashboard-card:nth-child(3) { animation-delay: 2.4s; }
+        .dashboard-card:nth-child(4) { animation-delay: 3.6s; }
+        .dashboard-card:nth-child(5) { animation-delay: 4.8s; }
         /* Card title styling */
         .dashboard-card h2 {
             color: white;
@@ -82,9 +83,11 @@ categories: ['DevOps']
         }
         /* Hover effect */
         .dashboard-card:hover {
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px) scale(1.01);
+            animation-play-state: paused;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2),
+                        inset 0 0 25px rgba(255, 255, 255, 0.1);
         }
         /* Add corner accents */
         .dashboard-card::before,
@@ -203,6 +206,39 @@ categories: ['DevOps']
             font-size: 1rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        /* RGB Breathing Animation */
+        @keyframes rgb-breathe {
+            0% {
+                border-color: rgba(255, 0, 0, 0.4);
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.2),
+                           inset 0 0 20px rgba(255, 0, 0, 0.1);
+                transform: scale(1);
+            }
+            25% {
+                border-color: rgba(255, 0, 255, 0.4);
+                box-shadow: 0 0 15px rgba(255, 0, 255, 0.2),
+                           inset 0 0 20px rgba(255, 0, 255, 0.1);
+                transform: scale(1.002);
+            }
+            50% {
+                border-color: rgba(0, 0, 255, 0.4);
+                box-shadow: 0 0 15px rgba(0, 0, 255, 0.2),
+                           inset 0 0 20px rgba(0, 0, 255, 0.1);
+                transform: scale(1);
+            }
+            75% {
+                border-color: rgba(0, 255, 0, 0.4);
+                box-shadow: 0 0 15px rgba(0, 255, 0, 0.2),
+                           inset 0 0 20px rgba(0, 255, 0, 0.1);
+                transform: scale(1.002);
+            }
+            100% {
+                border-color: rgba(255, 0, 0, 0.4);
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.2),
+                           inset 0 0 20px rgba(255, 0, 0, 0.1);
+                transform: scale(1);
+            }
         }
     </style>
 </head>
