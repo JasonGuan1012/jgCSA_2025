@@ -913,6 +913,44 @@ categories: ['DevOps']
             const dailyKwh = (gpu.powerConsumption * 24) / 1000;
             return dailyKwh * gameState.electricityRate;
         }
+        // Bitcoin Market Functions
+        async function updateBitcoinPrice() {
+            try {
+                // Using CoinGecko API for real Bitcoin price data
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const data = await response.json();
+                // Format the price with commas and 2 decimal places
+                const formattedPrice = data.bitcoin.usd.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                // Update BTC Price - using your HTML IDs
+                const btcPriceElement = document.getElementById('btc-price');
+                if (btcPriceElement) {
+                    btcPriceElement.textContent = `$${formattedPrice}`;
+                }
+                // Update 24h Change - using your HTML IDs
+                const changeElement = document.getElementById('btc-change');
+                if (changeElement) {
+                    const changeValue = data.bitcoin.usd_24h_change.toFixed(2);
+                    changeElement.textContent = `${changeValue}%`;
+                    // Add color based on price change
+                    if (data.bitcoin.usd_24h_change > 0) {
+                        changeElement.style.color = '#2ecc71'; // Green for positive
+                    } else {
+                        changeElement.style.color = '#e74c3c'; // Red for negative
+                    }
+                }
+                // Update game state with new BTC price
+                gameState.marketPrice = data.bitcoin.usd;
+            } catch (error) {
+                console.error('Error updating Bitcoin price:', error);
+            }
+        }
+        // Update price every 30 seconds
+        setInterval(updateBitcoinPrice, 30000);
+        // Initial price update when page loads
+        document.addEventListener('DOMContentLoaded', updateBitcoinPrice);
     </script>
 </body>
 </html>
