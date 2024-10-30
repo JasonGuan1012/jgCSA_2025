@@ -62,7 +62,7 @@ categories: ['DevOps']
         /* Card title styling */
         .dashboard-card h2 {
             color: white;
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: bold;
             margin-bottom: 1rem;
             text-transform: uppercase;
@@ -77,7 +77,7 @@ categories: ['DevOps']
         }
         .stat-value {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
@@ -150,6 +150,61 @@ categories: ['DevOps']
             background-color: #4b5563;
             border-radius: 4px;
         }
+        /* Add to your existing styles */
+        .dashboard-card.mt-8 {
+            background-color: rgba(17, 24, 39, 0.95); /* Darker background */
+            border: 2px solid;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            animation: cyber-border-glow 3s linear infinite;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        .dashboard-card.mt-8 h2 {
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .dashboard-card.mt-8 .guide-step {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        .dashboard-card.mt-8 .guide-step h3 {
+            color: #00ff00;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .dashboard-card.mt-8 .guide-step p {
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .dashboard-card.mt-8 .guide-step ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .dashboard-card.mt-8 .guide-step ul li {
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .dashboard-card.mt-8 .guide-step ul li span {
+            color: #00ff00;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
@@ -188,6 +243,10 @@ categories: ['DevOps']
             <div class="dashboard-card">
                 <h2>Hardware</h2>
                 <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">Current GPU</div>
+                        <div class="stat-value text-blue-400" id="current-gpu">No GPU</div>
+                    </div>
                     <div>
                         <div class="stat-label">GPU Temperature</div>
                         <div class="stat-value" id="gpu-temp">0°C</div>
@@ -251,8 +310,105 @@ categories: ['DevOps']
             <div class="chart-container">
                 <canvas id="profit-chart"></canvas>
             </div>
-            <div class="chart-container">
-                <canvas id="btc-price-chart"></canvas>
+        </div>
+        <!-- Add this after the charts section -->
+        <div class="dashboard-card mt-8">
+            <h2 class="text-xl font-bold mb-4">Quick Start Guide</h2>
+            <div class="space-y-4 text-gray-300">
+                <div class="guide-step">
+                    <h3 class="text-green-400 font-bold mb-2">1. Get Your First GPU 🎮</h3>
+                    <p>• Click the "GPU Shop" button to open the store</p>
+                    <p>• Start with the free GT 1030 - perfect for beginners!</p>
+                </div>
+                <div class="guide-step">
+                    <h3 class="text-green-400 font-bold mb-2">2. Choose a Mining Pool 🌐</h3>
+                    <p>• Mining pools combine the power of many miners to find Bitcoin blocks faster</p>
+                    <p>• Available pools:</p>
+                    <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                        <li><span class="text-white">NiceHash:</span> 2% fee, 4hr payout - Good for beginners, quick payments</li>
+                        <li><span class="text-white">Ethermine:</span> 1% fee, 24hr payout - Lower fees, longer wait</li>
+                        <li><span class="text-white">F2Pool:</span> 2.5% fee, 12hr payout - Balance of wait time and fees</li>
+                    </ul>
+                </div>
+                <div class="guide-step">
+                    <h3 class="text-green-400 font-bold mb-2">3. Start Mining ⛏️</h3>
+                    <p>• Click the "Start Mining" button to begin</p>
+                    <p>• Watch your hashrate (mining speed) in the charts</p>
+                    <p>• Mining earns you Bitcoin (BTC) over time</p>
+                    <p>• Shares show successful contributions to your pool</p>
+                </div>
+                <div class="guide-step">
+                    <h3 class="text-green-400 font-bold mb-2">4. Understanding Your Dashboard 📊</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="text-white">Wallet:</span> Shows your BTC balance and its USD value</li>
+                        <li><span class="text-white">Mining Stats:</span> Your mining speed (hashrate) and successful shares</li>
+                        <li><span class="text-white">Hardware:</span> Your GPU model, temperature, and power usage</li>
+                        <li><span class="text-white">Profitability:</span> Your earnings and power costs</li>
+                        <li><span class="text-white">Bitcoin Market:</span> Current BTC price and market changes</li>
+                    </ul>
+                </div>
+                <div class="guide-step">
+                    <h3 class="text-green-400 font-bold mb-2">5. Upgrade Strategy 📈</h3>
+                    <p>• Save your mining profits to buy better GPUs</p>
+                    <p>• Better GPUs = Higher hashrate = More Bitcoin</p>
+                    <p>• Watch your power costs - efficiency matters!</p>
+                </div>
+                <div class="guide-step mt-4">
+                    <h3 class="text-yellow-400 font-bold mb-2">Pro Tips 💡</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Check GPU efficiency (MH/W) when buying new cards</li>
+                        <li>Monitor your daily revenue vs power costs</li>
+                        <li>More expensive GPUs usually have better efficiency</li>
+                        <li>The Bitcoin price affects your USD profits</li>
+                        <li>Different pools have different advantages:</li>
+                        <ul class="list-circle list-inside ml-4 text-sm">
+                            <li>New miners: Start with NiceHash for frequent payouts</li>
+                            <li>Experienced miners: Try Ethermine for lower fees</li>
+                            <li>Consider switching pools as your operation grows</li>
+                        </ul>
+                    </ul>
+                </div>
+                <!-- Add these new sections after the Pro Tips -->
+                <div class="guide-step mt-4">
+                    <h3 class="text-blue-400 font-bold mb-2">Common Terms 📚</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="text-white">Hashrate:</span> Your mining speed - higher is better (measured in MH/s)</li>
+                        <li><span class="text-white">Shares:</span> Proof of your mining work submitted to the pool</li>
+                        <li><span class="text-white">Power Draw:</span> Electricity used by your GPU (measured in Watts)</li>
+                        <li><span class="text-white">Efficiency:</span> Hashrate per Watt (MH/W) - higher means more profitable</li>
+                        <li><span class="text-white">Pool Fee:</span> Percentage taken by the mining pool for their service</li>
+                    </ul>
+                </div>
+                <div class="guide-step mt-4">
+                    <h3 class="text-purple-400 font-bold mb-2">Troubleshooting 🔧</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="text-white">No Profits?</span> Check if mining is actually started and GPU is working</li>
+                        <li><span class="text-white">Low Hashrate?</span> Your GPU might be too basic - consider upgrading</li>
+                        <li><span class="text-white">High Power Costs?</span> Look for more efficient GPUs or lower electricity rates</li>
+                        <li><span class="text-white">No Shares?</span> Make sure your mining pool connection is stable</li>
+                    </ul>
+                </div>
+                <div class="guide-step mt-4">
+                    <h3 class="text-orange-400 font-bold mb-2">FAQ ❓</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-white">Q: How long until I make profit?</p>
+                            <p>A: Depends on your GPU, electricity cost, and Bitcoin price. Better GPUs = faster profits!</p>
+                        </div>
+                        <div>
+                            <p class="text-white">Q: Which GPU should I buy first?</p>
+                            <p>A: Start with the free GT 1030, save up for a mid-range GPU like the GTX 1660 SUPER</p>
+                        </div>
+                        <div>
+                            <p class="text-white">Q: Why do pool fees matter?</p>
+                            <p>A: Lower fees mean you keep more of your mining rewards, but might have longer payout times</p>
+                        </div>
+                        <div>
+                            <p class="text-white">Q: When should I upgrade my GPU?</p>
+                            <p>A: When your daily profits are enough to afford a better GPU within a reasonable time</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -302,7 +458,6 @@ categories: ['DevOps']
         // Initialize charts
         let hashrateChart;
         let profitChart;
-        let btcPriceChart;
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             initializeCharts();
@@ -335,92 +490,62 @@ categories: ['DevOps']
             });
         });
         function initializeCharts() {
-            // Initialize Hashrate Chart
+            const chartConfig = {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            };
+            // Hashrate Chart
             hashrateChart = new Chart(
                 document.getElementById('hashrate-chart').getContext('2d'),
                 {
-                    type: 'line',
+                    ...chartConfig,
                     data: {
                         labels: [],
                         datasets: [{
                             label: 'Hashrate (MH/s)',
                             data: [],
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
+                            borderColor: '#00ff00',
+                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                            borderWidth: 3,
+                            fill: true
                         }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
                     }
                 }
             );
-            // Initialize Profit Chart
+            // Profit Chart
             profitChart = new Chart(
                 document.getElementById('profit-chart').getContext('2d'),
                 {
-                    type: 'line',
+                    ...chartConfig,
                     data: {
                         labels: [],
                         datasets: [{
                             label: 'Profit (USD)',
                             data: [],
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
+                            borderColor: '#00ffff',
+                            backgroundColor: 'rgba(0, 255, 255, 0.1)',
+                            borderWidth: 3,
+                            fill: true
                         }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                }
-            );
-            // Bitcoin Price Chart
-            btcPriceChart = new Chart(
-                document.getElementById('btc-price-chart').getContext('2d'),
-                {
-                    type: 'line',
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Bitcoin Price (USD)',
-                            data: [],
-                            borderColor: 'rgb(247, 147, 26)', // Bitcoin orange
-                            tension: 0.1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                ticks: {
-                                    callback: function(value) {
-                                        return '$' + value.toLocaleString();
-                                    }
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return '$' + context.parsed.y.toLocaleString();
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             );
@@ -491,23 +616,24 @@ categories: ['DevOps']
             gameState.usdBalance -= hourlyPowerCost / 3600;
         }
         function updateCharts() {
+            if (!gameState.miningActive) return;
             const now = new Date().toLocaleTimeString();
-            // Update hashrate chart
+            // Update hashrate data
             hashrateChart.data.labels.push(now);
             hashrateChart.data.datasets[0].data.push(gameState.hashrate);
-            if (hashrateChart.data.labels.length > 20) {
-                hashrateChart.data.labels.shift();
-                hashrateChart.data.datasets[0].data.shift();
-            }
-            hashrateChart.update();
-            // Update profit chart
+            // Update profit data
             const currentProfit = gameState.btcBalance * gameState.marketPrice;
             profitChart.data.labels.push(now);
             profitChart.data.datasets[0].data.push(currentProfit);
-            if (profitChart.data.labels.length > 20) {
+            // Keep only last 10 points
+            if (hashrateChart.data.labels.length > 10) {
+                hashrateChart.data.labels.shift();
+                hashrateChart.data.datasets[0].data.shift();
                 profitChart.data.labels.shift();
                 profitChart.data.datasets[0].data.shift();
             }
+            // Update both charts
+            hashrateChart.update();
             profitChart.update();
         }
         function renderGpuShop() {
@@ -593,49 +719,6 @@ categories: ['DevOps']
             gameState.difficulty *= (Math.random() < 0.1) ? (1 + (Math.random() * 0.1 - 0.05)) : 1;
             if (gameState.miningActive) updateDisplay();
         }, 5000);
-        // Add Bitcoin price simulation
-        function updateBitcoinPrice() {
-            const btc = gameState.btcPrice;
-            // Update trend
-            if (Math.random() < 0.1) { // 10% chance to change trend
-                btc.trend = Math.random() * 2 - 1; // Random trend between -1 and 1
-            }
-            // Calculate price change
-            const change = (
-                (Math.random() * 2 - 1) * btc.volatility + // Random volatility
-                btc.trend * btc.volatility // Trend influence
-            );
-            // Update price
-            btc.current *= (1 + change);
-            // Keep price within realistic bounds
-            btc.current = Math.max(btc.current, 1000);
-            btc.current = Math.min(btc.current, 100000);
-            // Store price history
-            btc.history.push({
-                timestamp: Date.now(),
-                price: btc.current
-            });
-            // Keep only last 24 hours of history
-            const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-            btc.history = btc.history.filter(h => h.timestamp > oneDayAgo);
-            // Update chart
-            updateBitcoinChart();
-            // Update mining profitability
-            updateMiningProfitability();
-        }
-        // Update Bitcoin price chart
-        function updateBitcoinChart() {
-            const chart = btcPriceChart;
-            const now = new Date().toLocaleTimeString();
-            chart.data.labels.push(now);
-            chart.data.datasets[0].data.push(gameState.btcPrice.current);
-            // Keep last 20 data points
-            if (chart.data.labels.length > 20) {
-                chart.data.labels.shift();
-                chart.data.datasets[0].data.shift();
-            }
-            chart.update();
-        }
         // Add mining profitability calculation
         function updateMiningProfitability() {
             if (!gameState.currentGpu) return;
