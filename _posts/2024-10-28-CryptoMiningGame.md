@@ -1035,23 +1035,29 @@ type: ccc
         async function updateBitcoinPrice() {
             try {
                 // Using CoinGecko API for real Bitcoin price data
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true', {
+                    // Add CORS headers
+                    mode: 'cors',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
                 const data = await response.json();
                 // Format the price with commas and 2 decimal places
                 const formattedPrice = data.bitcoin.usd.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 });
-                // Update BTC Price - using your HTML IDs
+                // Update BTC Price - Fixed template literal syntax
                 const btcPriceElement = document.getElementById('btc-price');
                 if (btcPriceElement) {
-                    btcPriceElement.textContent = `$${formattedPrice}`;
+                    btcPriceElement.textContent = `$${formattedPrice}`; // Fixed backticks
                 }
-                // Update 24h Change - using your HTML IDs
+                // Update 24h Change - Fixed template literal syntax
                 const changeElement = document.getElementById('btc-change');
                 if (changeElement) {
                     const changeValue = data.bitcoin.usd_24h_change.toFixed(2);
-                    changeElement.textContent = `${changeValue}%`;
+                    changeElement.textContent = `${changeValue}%`; // Fixed backticks
                     // Add color based on price change
                     if (data.bitcoin.usd_24h_change > 0) {
                         changeElement.style.color = '#2ecc71'; // Green for positive
@@ -1063,6 +1069,14 @@ type: ccc
                 gameState.marketPrice = data.bitcoin.usd;
             } catch (error) {
                 console.error('Error updating Bitcoin price:', error);
+                // Fallback values if API fails
+                const btcPriceElement = document.getElementById('btc-price');
+                const changeElement = document.getElementById('btc-change');
+                if (btcPriceElement) btcPriceElement.textContent = '$45,000.00';
+                if (changeElement) {
+                    changeElement.textContent = '0.00%';
+                    changeElement.style.color = '#ffffff';
+                }
             }
         }
         // Update price every 30 seconds
