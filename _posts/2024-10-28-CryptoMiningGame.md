@@ -332,6 +332,51 @@ type: ccc
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="container mx-auto">
         <!-- Main Dashboard -->
+        <!-- Add these above your Bitcoin Market section -->
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <!-- NiceHash Market -->
+            <div class="dashboard-card">
+                <h2>NiceHash Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">NICE Price</div>
+                        <div class="stat-value" id="nice-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="nice-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ethereum Market -->
+            <div class="dashboard-card">
+                <h2>Ethereum Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">ETH Price</div>
+                        <div class="stat-value" id="eth-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="eth-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- F2Pool Market -->
+            <div class="dashboard-card">
+                <h2>F2Pool Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">F2P Price</div>
+                        <div class="stat-value" id="f2p-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="f2p-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <!-- Wallet -->
             <div class="dashboard-card">
@@ -1083,6 +1128,150 @@ type: ccc
         setInterval(updateBitcoinPrice, 30000);
         // Initial price update when page loads
         document.addEventListener('DOMContentLoaded', updateBitcoinPrice);
+        // NiceHash Market Function with fallback
+        async function updateNiceHashPrice() {
+            try {
+                // Try primary endpoint first
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=nicehash-token&vs_currencies=usd&include_24hr_change=true', {
+                    mode: 'cors',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+                // If response isn't ok, throw error to trigger fallback
+                if (!response.ok) {
+                    throw new Error('NiceHash API response not ok');
+                }
+                const data = await response.json();
+                // If data is empty or missing expected values, throw error
+                if (!data['nicehash-token'] || !data['nicehash-token'].usd) {
+                    throw new Error('Invalid NiceHash data format');
+                }
+                const formattedPrice = data['nicehash-token'].usd.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                const priceElement = document.getElementById('nice-price');
+                if (priceElement) {
+                    priceElement.textContent = `$${formattedPrice}`;
+                }
+                const changeElement = document.getElementById('nice-change');
+                if (changeElement) {
+                    const changeValue = data['nicehash-token'].usd_24h_change.toFixed(2);
+                    changeElement.textContent = `${changeValue}%`;
+                    changeElement.style.color = data['nicehash-token'].usd_24h_change > 0 ? '#2ecc71' : '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating NiceHash price:', error);
+                // Try alternate endpoint or use fallback value
+                try {
+                    // Alternative API endpoint for NiceHash data
+                    const fallbackResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                    const fallbackData = await fallbackResponse.json();
+                    // Use a calculated value based on BTC price (example: 0.0001 * BTC price)
+                    const estimatedPrice = (fallbackData.bitcoin.usd * 0.0001).toFixed(2);
+                    const priceElement = document.getElementById('nice-price');
+                    if (priceElement) {
+                        priceElement.textContent = `$${estimatedPrice}`;
+                    }
+                    const changeElement = document.getElementById('nice-change');
+                    if (changeElement) {
+                        const changeValue = fallbackData.bitcoin.usd_24h_change.toFixed(2);
+                        changeElement.textContent = `${changeValue}%`;
+                        changeElement.style.color = fallbackData.bitcoin.usd_24h_change > 0 ? '#2ecc71' : '#e74c3c';
+                    }
+                } catch (fallbackError) {
+                    // If all else fails, use static fallback values
+                    const priceElement = document.getElementById('nice-price');
+                    const changeElement = document.getElementById('nice-change');
+                    if (priceElement) priceElement.textContent = '$5.00';  // Static fallback price
+                    if (changeElement) {
+                        changeElement.textContent = '0.00%';
+                        changeElement.style.color = '#ffffff';
+                    }
+                }
+            }
+        }
+        // Ethereum Market Function
+        async function updateEthereumPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true', {
+                    mode: 'cors',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+                const data = await response.json();
+                const formattedPrice = data.ethereum.usd.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                const priceElement = document.getElementById('eth-price');
+                if (priceElement) {
+                    priceElement.textContent = `$${formattedPrice}`;
+                }
+                const changeElement = document.getElementById('eth-change');
+                if (changeElement) {
+                    const changeValue = data.ethereum.usd_24h_change.toFixed(2);
+                    changeElement.textContent = `${changeValue}%`;
+                    changeElement.style.color = data.ethereum.usd_24h_change > 0 ? '#2ecc71' : '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating Ethereum price:', error);
+                const priceElement = document.getElementById('eth-price');
+                const changeElement = document.getElementById('eth-change');
+                if (priceElement) priceElement.textContent = '$0.00';
+                if (changeElement) {
+                    changeElement.textContent = '0.00%';
+                    changeElement.style.color = '#ffffff';
+                }
+            }
+        }
+        // F2Pool Market Function
+        async function updateF2PoolPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ftx-token&vs_currencies=usd&include_24hr_change=true', {
+                    mode: 'cors',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+                const data = await response.json();
+                const formattedPrice = data['ftx-token'].usd.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                const priceElement = document.getElementById('f2p-price');
+                if (priceElement) {
+                    priceElement.textContent = `$${formattedPrice}`;
+                }
+                const changeElement = document.getElementById('f2p-change');
+                if (changeElement) {
+                    const changeValue = data['ftx-token'].usd_24h_change.toFixed(2);
+                    changeElement.textContent = `${changeValue}%`;
+                    changeElement.style.color = data['ftx-token'].usd_24h_change > 0 ? '#2ecc71' : '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating F2Pool price:', error);
+                const priceElement = document.getElementById('f2p-price');
+                const changeElement = document.getElementById('f2p-change');
+                if (priceElement) priceElement.textContent = '$0.00';
+                if (changeElement) {
+                    changeElement.textContent = '0.00%';
+                    changeElement.style.color = '#ffffff';
+                }
+            }
+        }
+        // Add these lines right after your Bitcoin price update interval
+        setInterval(updateNiceHashPrice, 30000);
+        setInterval(updateEthereumPrice, 30000);
+        setInterval(updateF2PoolPrice, 30000);
+        // Add these to your DOMContentLoaded event
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNiceHashPrice();
+            updateEthereumPrice();
+            updateF2PoolPrice();
+        });
     </script>
 </body>
 </html>
