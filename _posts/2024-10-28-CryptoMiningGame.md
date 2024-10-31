@@ -573,6 +573,10 @@ type: ccc
                             <p>A: Lower fees mean you keep more of your mining rewards, but might have longer payout times</p>
                         </div>
                         <div>
+                            <p class="text-white">Q: Which pool should I choose?</p>
+                            <p>A: For beginners: NiceHash (quick payouts) or Ethermine (low fees). Advanced miners: Bitcoin Pool (fastest payouts) or F2Pool (balanced)</p>
+                        </div>
+                        <div>
                             <p class="text-white">Q: When should I upgrade my GPU?</p>
                             <p>A: When your daily profits are enough to afford a better GPU within a reasonable time</p>
                         </div>
