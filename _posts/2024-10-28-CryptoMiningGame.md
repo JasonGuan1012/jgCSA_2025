@@ -1077,16 +1077,15 @@ type: ccc
             const dailyKwh = (gpu.powerConsumption * 24) / 1000;
             return dailyKwh * gameState.electricityRate;
         }
-        // Single function to fetch all prices at once
         async function updateAllMarketPrices() {
-            const markets = ['btc', 'nice', 'eth', 'f2p'];
-            // Show loading state for all markets
+            const markets = ['btc', 'eth', 'f2p'];
+            // Show loading state
             markets.forEach(id => {
                 const priceElement = document.getElementById(`${id}-price`);
                 if (priceElement) priceElement.textContent = 'Loading...';
             });
             try {
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,nicehash-token,ftx-token&vs_currencies=usd&include_24hr_change=true', {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ftx-token&vs_currencies=usd&include_24hr_change=true', {
                     mode: 'cors',
                     headers: {
                         'Access-Control-Allow-Origin': '*'
@@ -1094,9 +1093,8 @@ type: ccc
                 });
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
-                // Update each market
+                // Update markets except NiceHash
                 updatePriceDisplay('btc', data.bitcoin);
-                updatePriceDisplay('nice', data['nicehash-token']);
                 updatePriceDisplay('eth', data.ethereum);
                 updatePriceDisplay('f2p', data['ftx-token']);
                 // Update game state with new BTC price
@@ -1105,16 +1103,33 @@ type: ccc
                 }
             } catch (error) {
                 console.error('Error fetching market prices:', error);
-                // Show error state for all markets
                 markets.forEach(id => {
                     const priceElement = document.getElementById(`${id}-price`);
-                    const changeElement = document.getElementById(`${id}-change`);
-                    if (priceElement) priceElement.textContent = 'Error';
-                    if (changeElement) {
-                        changeElement.textContent = '0.00%';
-                        changeElement.style.color = '#ffffff';
-                    }
+                    if (priceElement) priceElement.textContent = 'API Error';
                 });
+            }
+        }
+        async function updateNiceHashPrice() {
+            const priceElement = document.getElementById('nice-price');
+            const changeElement = document.getElementById('nice-change');
+            try {
+                // Simulate NiceHash price based on Bitcoin price
+                const btcPrice = gameState.btcPrice.current;
+                const nicePrice = btcPrice * 0.00002 * (1 + (Math.random() * 0.1 - 0.05)); // Random variation ±5%
+                const change = (Math.random() * 4 - 2); // Random 24h change between -2% and +2%   
+                // Update display
+                if (priceElement) priceElement.textContent = `$${nicePrice.toFixed(2)}`;
+                if (changeElement) {
+                    changeElement.textContent = `${change.toFixed(2)}%`;
+                    changeElement.style.color = change >= 0 ? '#2ecc71' : '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating NiceHash price:', error);
+                if (priceElement) priceElement.textContent = 'Error';
+                if (changeElement) {
+                    changeElement.textContent = '0.00%';
+                    changeElement.style.color = '#ffffff';
+                }
             }
         }
         // Helper function to update display
@@ -1136,9 +1151,15 @@ type: ccc
             }
         }
         // Update all prices every 30 seconds
-        setInterval(updateAllMarketPrices, 30000);
+        setInterval(() => {
+            updateAllMarketPrices();
+            updateNiceHashPrice();
+        }, 30000);
         // Initial update when page loads
-        document.addEventListener('DOMContentLoaded', updateAllMarketPrices);
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAllMarketPrices();
+            updateNiceHashPrice();
+        });
     </script>
 </body>
 </html>
