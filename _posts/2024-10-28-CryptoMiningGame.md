@@ -496,6 +496,7 @@ type: ccc
                         <li><span class="text-white">NiceHash:</span> 2% fee, 4hr payout - Good for beginners, quick payments</li>
                         <li><span class="text-white">Ethermine:</span> 1% fee, 24hr payout - Lower fees, longer wait</li>
                         <li><span class="text-white">F2Pool:</span> 2.5% fee, 12hr payout - Balance of wait time and fees</li>
+                        <li><span class="text-white">Bitcoin Pool:</span> 3% fee, 1hr payout - Fastest payouts, higher fees</li>
                     </ul>
                 </div>
                 <div class="guide-step">
