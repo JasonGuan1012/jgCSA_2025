@@ -18,24 +18,44 @@ permalink: /mining/
         /* More subtle RGB Border Animation for Dark Theme */
         @keyframes cyber-border-glow {
             0% { 
-                border-color: rgba(255, 0, 0, 0.5);  /* Softer red */
-                box-shadow: 0 0 10px rgba(255, 0, 0, 0.3),
-                           inset 0 0 15px rgba(255, 0, 0, 0.2);
+                border-color: rgba(255, 0, 0, 0.4);      /* Red */
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.2),
+                        inset 0 0 15px rgba(255, 0, 0, 0.1);
             }
-            33% { 
-                border-color: rgba(15, 255, 0, 0.5);  /* Softer green */
-                box-shadow: 0 0 10px rgba(15, 255, 0, 0.3),
-                           inset 0 0 15px rgba(15, 255, 0, 0.2);
+            14.28% { 
+                border-color: rgba(255, 127, 0, 0.4);    /* Orange */
+                box-shadow: 0 0 10px rgba(255, 127, 0, 0.2),
+                        inset 0 0 15px rgba(255, 127, 0, 0.1);
             }
-            66% { 
-                border-color: rgba(0, 255, 255, 0.5);  /* Softer cyan */
-                box-shadow: 0 0 10px rgba(0, 255, 255, 0.3),
-                           inset 0 0 15px rgba(0, 255, 255, 0.2);
+            28.57% { 
+                border-color: rgba(255, 255, 0, 0.4);    /* Yellow */
+                box-shadow: 0 0 10px rgba(255, 255, 0, 0.2),
+                        inset 0 0 15px rgba(255, 255, 0, 0.1);
+            }
+            42.85% { 
+                border-color: rgba(0, 255, 0, 0.4);      /* Green */
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.2),
+                        inset 0 0 15px rgba(0, 255, 0, 0.1);
+            }
+            57.14% { 
+                border-color: rgba(0, 255, 255, 0.4);    /* Cyan */
+                box-shadow: 0 0 10px rgba(0, 255, 255, 0.2),
+                        inset 0 0 15px rgba(0, 255, 255, 0.1);
+            }
+            71.42% { 
+                border-color: rgba(0, 127, 255, 0.4);    /* Light Blue */
+                box-shadow: 0 0 10px rgba(0, 127, 255, 0.2),
+                        inset 0 0 15px rgba(0, 127, 255, 0.1);
+            }
+            85.71% { 
+                border-color: rgba(139, 0, 255, 0.4);    /* Purple */
+                box-shadow: 0 0 10px rgba(139, 0, 255, 0.2),
+                        inset 0 0 15px rgba(139, 0, 255, 0.1);
             }
             100% { 
-                border-color: rgba(255, 0, 0, 0.5);  /* Back to softer red */
-                box-shadow: 0 0 10px rgba(255, 0, 0, 0.3),
-                           inset 0 0 15px rgba(255, 0, 0, 0.2);
+                border-color: rgba(255, 0, 0, 0.4);      /* Back to Red */
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.2),
+                        inset 0 0 15px rgba(255, 0, 0, 0.1);
             }
         }
         /* Updated Dashboard Card Styling */
@@ -44,17 +64,17 @@ permalink: /mining/
             border: 1.5px solid;
             border-radius: 0.75rem;
             padding: 1.25rem;
-            animation: rgb-breathe 6s ease-in-out infinite;
+            animation: cyber-border-glow 4s linear infinite;  /* Changed from rgb-breathe */
             position: relative;
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
         /* Different animation delays for wave effect */
         .dashboard-card:nth-child(1) { animation-delay: 0s; }
-        .dashboard-card:nth-child(2) { animation-delay: 0.5s; }
-        .dashboard-card:nth-child(3) { animation-delay: 1s; }
-        .dashboard-card:nth-child(4) { animation-delay: 1.5s; }
-        .dashboard-card:nth-child(5) { animation-delay: 2s; }
+        .dashboard-card:nth-child(2) { animation-delay: -0.8s; }
+        .dashboard-card:nth-child(3) { animation-delay: -1.6s; }
+        .dashboard-card:nth-child(4) { animation-delay: -2.4s; }
+        .dashboard-card:nth-child(5) { animation-delay: -3.2s; }
         /* Card title styling */
         .dashboard-card h2 {
             color: white;
