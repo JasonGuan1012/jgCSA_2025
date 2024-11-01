@@ -1,11 +1,8 @@
 ---
-toc: false
-comments: True
 layout: post
-title: Crypto Mining Game
-description: Crypto Mining Game for PBL tri 1 Project
-courses: {csa: {week: 9}}
-type: ccc
+title: Crypto Mining Simulator
+type: issues
+permalink: /mining/
 ---
 
 <html lang="en">
@@ -151,6 +148,7 @@ type: ccc
             background-color: #4b5563;
             border-radius: 4px;
         }
+        /* Add to your existing styles */
         .dashboard-card.mt-8 {
             background-color: rgba(17, 24, 39, 0.95); /* Darker background */
             border: 2px solid;
@@ -330,6 +328,50 @@ type: ccc
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="container mx-auto">
         <!-- Main Dashboard -->
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <!-- NiceHash Market -->
+            <div class="dashboard-card">
+                <h2>NiceHash Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">NICE Price</div>
+                        <div class="stat-value" id="nice-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="nice-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ethereum Market -->
+            <div class="dashboard-card">
+                <h2>Ethereum Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">ETH Price</div>
+                        <div class="stat-value" id="eth-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="eth-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- F2Pool Market -->
+            <div class="dashboard-card">
+                <h2>F2Pool Market</h2>
+                <div class="grid gap-2">
+                    <div>
+                        <div class="stat-label">F2P Price</div>
+                        <div class="stat-value" id="f2p-price">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">24h Change</div>
+                        <div class="stat-value" id="f2p-change">0.00%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <!-- Wallet -->
             <div class="dashboard-card">
@@ -416,6 +458,7 @@ type: ccc
                     <option value="nicehash">NiceHash (2% fee, 4hr payout)</option>
                     <option value="ethermine">Ethermine (1% fee, 24hr payout)</option>
                     <option value="f2pool">F2Pool (2.5% fee, 12hr payout)</option>
+                    <option value="poolin">Bitcoin (3% fee, 1hr payout)</option>
                 </select>
                 <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
                     GPU Shop
@@ -447,6 +490,7 @@ type: ccc
                         <li><span class="text-white">NiceHash:</span> 2% fee, 4hr payout - Good for beginners, quick payments</li>
                         <li><span class="text-white">Ethermine:</span> 1% fee, 24hr payout - Lower fees, longer wait</li>
                         <li><span class="text-white">F2Pool:</span> 2.5% fee, 12hr payout - Balance of wait time and fees</li>
+                        <li><span class="text-white">Bitcoin Pool:</span> 3% fee, 1hr payout - Fastest payouts, higher fees</li>
                     </ul>
                 </div>
                 <div class="guide-step">
@@ -520,6 +564,10 @@ type: ccc
                         <div>
                             <p class="text-white">Q: Why do pool fees matter?</p>
                             <p>A: Lower fees mean you keep more of your mining rewards, but might have longer payout times</p>
+                        </div>
+                        <div>
+                            <p class="text-white">Q: Which pool should I choose?</p>
+                            <p>A: For beginners: NiceHash (quick payouts) or Ethermine (low fees). Advanced miners: Bitcoin Pool (fastest payouts) or F2Pool (balanced)</p>
                         </div>
                         <div>
                             <p class="text-white">Q: When should I upgrade my GPU?</p>
@@ -710,12 +758,6 @@ type: ccc
                 }, 1000);
             }
         }
-        const poolSettings = {
-            nicehash: { fee: 0.02, payoutHours: 4 },
-            ethermine: { fee: 0.01, payoutHours: 24 },
-            f2pool: { fee: 0.025, payoutHours: 12 },
-            bitcoin: { fee: 0.03, payoutHours: 1 }
-        };
         function stopMining() {
             if (window.miningInterval) {
                 clearInterval(window.miningInterval);
@@ -724,16 +766,13 @@ type: ccc
         }
         function calculateMining() {
             if (!gameState.currentGpu) return;
-            // Get selected pool and its fee
-            const selectedPool = document.getElementById('pool-selection').value;
-            const poolFee = poolSettings[selectedPool].fee;
             // Calculate mining rewards
             const hashPower = gameState.currentGpu.hashRate;
             gameState.hashrate = hashPower;
             // Simulate finding shares
             if (Math.random() < hashPower / gameState.difficulty / 1000) {
                 gameState.shares++;
-                gameState.btcBalance += (6.25 / 100000) * (1 - poolFee); // Apply pool-specific fee
+                gameState.btcBalance += (6.25 / 100000) * (1 - gameState.poolFee); // Simplified BTC reward
             }
             // Update temperature and power
             gameState.temperature = Math.min(90, 40 + Math.random() * 30);
@@ -803,6 +842,7 @@ type: ccc
                     const roi = gpu.price / dailyProfit;
                     const gpuCard = document.createElement('div');
                     gpuCard.className = 'gpu-card mb-4';
+                    // Rest of your existing card HTML...
                     gpuCard.innerHTML = `
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
@@ -1035,44 +1075,89 @@ type: ccc
             const dailyKwh = (gpu.powerConsumption * 24) / 1000;
             return dailyKwh * gameState.electricityRate;
         }
-        // Bitcoin Market Functions
-        async function updateBitcoinPrice() {
+        async function updateAllMarketPrices() {
+            const markets = ['btc', 'eth', 'f2p'];
+            // Show loading state
+            markets.forEach(id => {
+                const priceElement = document.getElementById(`${id}-price`);
+                if (priceElement) priceElement.textContent = 'Loading...';
+            });
             try {
-                // Using CoinGecko API for real Bitcoin price data
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ftx-token&vs_currencies=usd&include_24hr_change=true', {
+                    mode: 'cors',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+                if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
-                // Format the price with commas and 2 decimal places
-                const formattedPrice = data.bitcoin.usd.toLocaleString('en-US', {
+                // Update markets except NiceHash
+                updatePriceDisplay('btc', data.bitcoin);
+                updatePriceDisplay('eth', data.ethereum);
+                updatePriceDisplay('f2p', data['ftx-token']);
+                // Update game state with new BTC price
+                if (data.bitcoin && data.bitcoin.usd) {
+                    gameState.btcPrice.current = data.bitcoin.usd;
+                }
+            } catch (error) {
+                console.error('Error fetching market prices:', error);
+                markets.forEach(id => {
+                    const priceElement = document.getElementById(`${id}-price`);
+                    if (priceElement) priceElement.textContent = 'API Error';
+                });
+            }
+        }
+        async function updateNiceHashPrice() {
+            const priceElement = document.getElementById('nice-price');
+            const changeElement = document.getElementById('nice-change');
+            try {
+                // Simulate NiceHash price based on Bitcoin price
+                const btcPrice = gameState.btcPrice.current;
+                const nicePrice = btcPrice * 0.00002 * (1 + (Math.random() * 0.1 - 0.05)); // Random variation ±5%
+                const change = (Math.random() * 4 - 2); // Random 24h change between -2% and +2%   
+                // Update display
+                if (priceElement) priceElement.textContent = `$${nicePrice.toFixed(2)}`;
+                if (changeElement) {
+                    changeElement.textContent = `${change.toFixed(2)}%`;
+                    changeElement.style.color = change >= 0 ? '#2ecc71' : '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating NiceHash price:', error);
+                if (priceElement) priceElement.textContent = 'Error';
+                if (changeElement) {
+                    changeElement.textContent = '0.00%';
+                    changeElement.style.color = '#ffffff';
+                }
+            }
+        }
+        // Helper function to update display
+        function updatePriceDisplay(id, data) {
+            if (!data || !data.usd) return;  // Skip if data is invalid
+            const priceElement = document.getElementById(`${id}-price`);
+            const changeElement = document.getElementById(`${id}-change`);
+            if (priceElement) {
+                const formattedPrice = data.usd.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 });
-                // Update BTC Price - using your HTML IDs
-                const btcPriceElement = document.getElementById('btc-price');
-                if (btcPriceElement) {
-                    btcPriceElement.textContent = `$${formattedPrice}`;
-                }
-                // Update 24h Change - using your HTML IDs
-                const changeElement = document.getElementById('btc-change');
-                if (changeElement) {
-                    const changeValue = data.bitcoin.usd_24h_change.toFixed(2);
-                    changeElement.textContent = `${changeValue}%`;
-                    // Add color based on price change
-                    if (data.bitcoin.usd_24h_change > 0) {
-                        changeElement.style.color = '#2ecc71'; // Green for positive
-                    } else {
-                        changeElement.style.color = '#e74c3c'; // Red for negative
-                    }
-                }
-                // Update game state with new BTC price
-                gameState.marketPrice = data.bitcoin.usd;
-            } catch (error) {
-                console.error('Error updating Bitcoin price:', error);
+                priceElement.textContent = `$${formattedPrice}`;
+            }
+            if (changeElement) {
+                const changeValue = data.usd_24h_change.toFixed(2);
+                changeElement.textContent = `${changeValue}%`;
+                changeElement.style.color = data.usd_24h_change >= 0 ? '#2ecc71' : '#e74c3c';
             }
         }
-        // Update price every 30 seconds
-        setInterval(updateBitcoinPrice, 30000);
-        // Initial price update when page loads
-        document.addEventListener('DOMContentLoaded', updateBitcoinPrice);
+        // Update all prices every 30 seconds
+        setInterval(() => {
+            updateAllMarketPrices();
+            updateNiceHashPrice();
+        }, 30000);
+        // Initial update when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAllMarketPrices();
+            updateNiceHashPrice();
+        });
     </script>
 </body>
 </html>
