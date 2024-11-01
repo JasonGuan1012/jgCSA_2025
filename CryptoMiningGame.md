@@ -151,7 +151,6 @@ type: ccc
             background-color: #4b5563;
             border-radius: 4px;
         }
-        /* Add to your existing styles */
         .dashboard-card.mt-8 {
             background-color: rgba(17, 24, 39, 0.95); /* Darker background */
             border: 2px solid;
@@ -239,7 +238,6 @@ type: ccc
                 transform: scale(1);
             }
         }
-        /* Add these new styles to your existing <style> section */
         /* GPU Card Base Style */
         .gpu-card {
             transition: all 0.3s ease;
@@ -276,7 +274,7 @@ type: ccc
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
             border-color: rgba(255, 0, 0, 0.5);
         }
-        /* GPU Card Hover Effects - Updated for your structure */
+        /* GPU Card Hover Effects - Updated structure */
         .gpu-card {
             background: rgba(26, 31, 46, 0.95);
             border-radius: 0.5rem;
@@ -433,7 +431,6 @@ type: ccc
                 <canvas id="profit-chart"></canvas>
             </div>
         </div>
-        <!-- Add this after the charts section -->
         <div class="dashboard-card mt-8">
             <h2 class="text-xl font-bold mb-4">Quick Start Guide</h2>
             <div class="space-y-4 text-gray-300">
@@ -490,7 +487,6 @@ type: ccc
                         </ul>
                     </ul>
                 </div>
-                <!-- Add these new sections after the Pro Tips -->
                 <div class="guide-step mt-4">
                     <h3 class="text-blue-400 font-bold mb-2">Common Terms 📚</h3>
                     <ul class="list-disc list-inside space-y-2">
@@ -807,7 +803,6 @@ type: ccc
                     const roi = gpu.price / dailyProfit;
                     const gpuCard = document.createElement('div');
                     gpuCard.className = 'gpu-card mb-4';
-                    // Rest of your existing card HTML...
                     gpuCard.innerHTML = `
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
