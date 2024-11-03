@@ -1237,7 +1237,6 @@ permalink: /mining/
         function updateGpuInventory() {
             const inventoryContainer = document.getElementById('gpu-inventory');
             inventoryContainer.innerHTML = '<h2 class="text-xl font-bold mb-4">Your GPUs</h2>';
-            
             gameState.ownedGpus.forEach(gpu => {
                 const gpuElement = document.createElement('div');
                 gpuElement.className = 'gpu-inventory-item flex justify-between items-center p-2 mb-2 bg-gray-800 rounded';
