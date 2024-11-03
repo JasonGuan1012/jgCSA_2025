@@ -323,6 +323,19 @@ permalink: /mining/
         .gpu-card:hover {
             transform: translateY(-5px) scale(1.02);
         }
+        .gpu-inventory-item {
+            transition: all 0.3s ease;
+        }
+        .gpu-inventory-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+        .gpu-inventory-item button {
+            transition: all 0.2s ease;
+        }
+        .gpu-inventory-item button:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
@@ -474,6 +487,12 @@ permalink: /mining/
                 <canvas id="profit-chart"></canvas>
             </div>
         </div>
+        <!-- GPU Inventory -->
+        <div class="dashboard-card mt-4">
+            <div id="gpu-inventory" class="gpu-inventory">
+                <!-- GPU inventory will be populated here -->
+            </div>
+        </div>
         <div class="dashboard-card mt-8">
             <h2 class="text-xl font-bold mb-4">Quick Start Guide</h2>
             <div class="space-y-4 text-gray-300">
@@ -597,8 +616,9 @@ permalink: /mining/
         // Game State
         const gameState = {
             btcBalance: 0,
-            usdBalance: 0, // Starting money
-            currentGpu: null, // Start with no GPU
+            usdBalance: 0,  // Start with 0 USD
+            currentGpu: null,  // Start with no GPU
+            ownedGpus: [], // Array to store owned GPUs
             miningActive: false,
             poolFee: 0.02,
             electricityRate: 0.12,
@@ -807,17 +827,15 @@ permalink: /mining/
         }
         function calculateMining() {
             if (!gameState.currentGpu) return;
-            // Calculate mining rewards
             const hashPower = gameState.currentGpu.hashRate;
             gameState.hashrate = hashPower;
             // Simulate finding shares
             if (Math.random() < hashPower / gameState.difficulty / 1000) {
                 gameState.shares++;
-                gameState.btcBalance += (6.25 / 100000) * (1 - gameState.poolFee); // Simplified BTC reward
+                const btcReward = (6.25 / 100000) * (1 - gameState.poolFee);
+                gameState.btcBalance += btcReward;
+                gameState.usdBalance += btcReward * gameState.marketPrice; // Convert BTC to USD
             }
-            // Update temperature and power
-            gameState.temperature = Math.min(90, 40 + Math.random() * 30);
-            gameState.powerDraw = gameState.currentGpu.powerConsumption * (1 + Math.random() * 0.1);
             // Calculate power cost
             const hourlyPowerCost = (gameState.powerDraw / 1000) * gameState.electricityRate;
             gameState.usdBalance -= hourlyPowerCost / 3600;
@@ -924,20 +942,36 @@ permalink: /mining/
         }
         function buyGpu(index) {
             const gpu = gpuList[index];
-            if (gameState.usdBalance >= gpu.price) {
-                gameState.usdBalance -= gpu.price;
+            if (gpu.price === 0 || gameState.usdBalance >= gpu.price) {
+                // Check if we already own this GPU
+                if (!gameState.ownedGpus.some(ownedGpu => ownedGpu.name === gpu.name)) {
+                    if (gpu.price > 0) {
+                        gameState.usdBalance -= gpu.price;
+                        // Convert some USD price to BTC equivalent and subtract it
+                        const btcCost = gpu.price / gameState.btcPrice.current;
+                        gameState.btcBalance -= btcCost;
+                    }
+                    gameState.ownedGpus.push(gpu); // Add to owned GPUs
+                } else {
+                    alert('You already own this GPU!');
+                    return;
+                }
                 gameState.currentGpu = gpu;
                 document.getElementById('gpu-shop-modal').classList.add('hidden');
                 document.getElementById('current-gpu').textContent = gpu.name;
                 updateDisplay();
+                updateGpuInventory();
                 alert(`Successfully acquired ${gpu.name}!`);
             } else {
                 alert('Insufficient funds!');
             }
         }
         function updateDisplay() {
+            // Update BTC balance
             document.getElementById('btc-balance').textContent = gameState.btcBalance.toFixed(8);
-            document.getElementById('usd-value').textContent = `$${(gameState.btcBalance * gameState.marketPrice).toFixed(2)}`;
+            // Update USD value - should show actual USD balance, not just BTC converted to USD
+            document.getElementById('usd-value').textContent = `$${gameState.usdBalance.toFixed(2)}`;
+            // Update other stats
             document.getElementById('hashrate').textContent = `${gameState.currentGpu ? gameState.currentGpu.hashRate.toFixed(2) : '0'} MH/s`;
             document.getElementById('shares').textContent = gameState.shares;
             document.getElementById('gpu-temp').textContent = `${gameState.temperature.toFixed(1)}°C`;
@@ -1199,6 +1233,37 @@ permalink: /mining/
             updateAllMarketPrices();
             updateNiceHashPrice();
         });
+        // Add GPU inventory display and switching functionality
+        function updateGpuInventory() {
+            const inventoryContainer = document.getElementById('gpu-inventory');
+            inventoryContainer.innerHTML = '<h2 class="text-xl font-bold mb-4">Your GPUs</h2>';
+            
+            gameState.ownedGpus.forEach(gpu => {
+                const gpuElement = document.createElement('div');
+                gpuElement.className = 'gpu-inventory-item flex justify-between items-center p-2 mb-2 bg-gray-800 rounded';
+                gpuElement.innerHTML = `
+                    <div>
+                        <span class="font-bold ${gpu === gameState.currentGpu ? 'text-green-400' : 'text-white'}">${gpu.name}</span>
+                        <span class="text-sm text-gray-400 ml-2">${gpu.hashRate} MH/s</span>
+                    </div>
+                    <button onclick="switchGpu('${gpu.name}')" 
+                            class="px-3 py-1 rounded ${gpu === gameState.currentGpu ? 'bg-green-600' : 'bg-blue-600'} hover:bg-opacity-80">
+                        ${gpu === gameState.currentGpu ? 'Active' : 'Switch'}
+                    </button>
+                `;
+                inventoryContainer.appendChild(gpuElement);
+            });
+        }
+        // Add switchGpu function
+        function switchGpu(gpuName) {
+            const gpu = gameState.ownedGpus.find(g => g.name === gpuName);
+            if (gpu) {
+                gameState.currentGpu = gpu;
+                document.getElementById('current-gpu').textContent = gpu.name;
+                updateDisplay();
+                updateGpuInventory();
+            }
+        }
     </script>
 </body>
 </html>
