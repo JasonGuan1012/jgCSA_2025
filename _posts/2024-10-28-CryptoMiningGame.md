@@ -686,25 +686,25 @@ permalink: /mining/
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'  // Lighter grid lines
+                                color: 'rgba(0, 0, 0, 0.1)'  // Lighter grid lines
                             },
                             ticks: {
-                                color: 'rgba(255, 255, 255, 0.7)'  // Lighter axis labels
+                                color: 'rgba(0, 0, 0, 0.7)'  // Lighter axis labels
                             }
                         },
                         x: {
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'  // Lighter grid lines
+                                color: 'rgba(0, 0, 0, 0.1)'  // Lighter grid lines
                             },
                             ticks: {
-                                color: 'rgba(255, 255, 255, 0.7)'  // Lighter axis labels
+                                color: 'rgba(0, 0, 0, 0.7)'  // Lighter axis labels
                             }
                         }
                     },
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'rgba(255, 255, 255, 0.9)'  // Brighter legend text
+                                color: 'rgba(0, 0, 0, 0.9)'  // Brighter legend text
                             }
                         }
                     }
