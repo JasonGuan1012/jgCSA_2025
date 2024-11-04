@@ -1223,11 +1223,11 @@ permalink: /mining/
                 changeElement.style.color = data.usd_24h_change >= 0 ? '#2ecc71' : '#e74c3c';
             }
         }
-        // Update all prices every 30 seconds
+        // Update all prices every hour
         setInterval(() => {
             updateAllMarketPrices();
             updateNiceHashPrice();
-        }, 30000);
+        }, 3600000);
         // Initial update when page loads
         document.addEventListener('DOMContentLoaded', () => {
             updateAllMarketPrices();
