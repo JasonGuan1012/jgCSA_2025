@@ -829,6 +829,11 @@ permalink: /mining/
             if (!gameState.currentGpu) return;
             const hashPower = gameState.currentGpu.hashRate;
             gameState.hashrate = hashPower;
+            // Add random fluctuations to temperature and power
+            const tempVariation = Math.random() * 4 - 2; // ±2°C variation
+            const powerVariation = Math.random() * 20 - 10; // ±10W variation
+            gameState.temperature = gameState.currentGpu.temp + tempVariation;
+            gameState.powerDraw = gameState.currentGpu.powerConsumption + powerVariation;
             // Simulate finding shares
             if (Math.random() < hashPower / gameState.difficulty / 1000) {
                 gameState.shares++;
