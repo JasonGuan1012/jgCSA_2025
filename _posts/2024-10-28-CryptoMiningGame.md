@@ -1035,7 +1035,7 @@ permalink: /mining/
             { 
                 name: "NVIDIA GeForce GT 1030", 
                 price: 0, 
-                hashRate: 5555.55,         // MH/s
+                hashRate: 1.55,         // MH/s
                 powerConsumption: 30,  // Watts
                 efficiency: 0.05,      // MH/s per watt
                 temp: 65              // °C
