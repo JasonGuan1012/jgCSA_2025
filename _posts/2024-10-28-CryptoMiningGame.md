@@ -395,8 +395,15 @@ permalink: /mining/
                         <div class="stat-value" id="btc-balance">0.00000000</div>
                     </div>
                     <div>
+                        <div class="stat-label">Pending BTC</div>
+                        <div class="stat-value text-yellow-400" id="pending-balance">0.00000000</div>
+                    </div>
+                    <div>
                         <div class="stat-label">USD Value</div>
                         <div class="stat-value" id="usd-value">$0.00</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" id="pool-info">Min. Payout: 0.001 BTC</div>
                     </div>
                 </div>
             </div>
@@ -640,6 +647,15 @@ permalink: /mining/
                 btc: 0,
                 usd: 0,
             },
+            pendingBalance: 0,
+            pendingThreshold: {
+                nicehash: 0.001,    // 0.001 BTC minimum (4hr payout)
+                ethermine: 0.01,    // 0.01 BTC minimum (24hr payout)
+                f2pool: 0.005,      // 0.005 BTC minimum (12hr payout)
+                poolin: 0.0005      // 0.0005 BTC minimum (1hr payout)
+            },
+            selectedPool: 'nicehash',
+            lastPayout: Date.now()
         };
         // Initialize charts
         let hashrateChart;
@@ -834,12 +850,13 @@ permalink: /mining/
             const powerVariation = Math.random() * 20 - 10; // ±10W variation
             gameState.temperature = gameState.currentGpu.temp + tempVariation;
             gameState.powerDraw = gameState.currentGpu.powerConsumption + powerVariation;
-            // Simulate finding shares
+            // Simulate finding shares and add to pending balance
             if (Math.random() < hashPower / gameState.difficulty / 1000) {
                 gameState.shares++;
                 const btcReward = (6.25 / 100000) * (1 - gameState.poolFee);
-                gameState.btcBalance += btcReward;
-                gameState.usdBalance += btcReward * gameState.marketPrice; // Convert BTC to USD
+                gameState.pendingBalance += btcReward;
+                // Check if we should process a payout
+                checkAndProcessPayout();
             }
             // Calculate power cost
             const hourlyPowerCost = (gameState.powerDraw / 1000) * gameState.electricityRate;
@@ -972,8 +989,10 @@ permalink: /mining/
             }
         }
         function updateDisplay() {
-            // Update BTC balance
+            // Update BTC balance without pending amount in parentheses
             document.getElementById('btc-balance').textContent = gameState.btcBalance.toFixed(8);
+            // Update pending balance in its own element
+            document.getElementById('pending-balance').textContent = gameState.pendingBalance.toFixed(8);
             // Update USD value - should show actual USD balance, not just BTC converted to USD
             document.getElementById('usd-value').textContent = `$${gameState.usdBalance.toFixed(2)}`;
             // Update other stats
@@ -1016,7 +1035,7 @@ permalink: /mining/
             { 
                 name: "NVIDIA GeForce GT 1030", 
                 price: 0, 
-                hashRate: 1.55,         // MH/s
+                hashRate: 5555.55,         // MH/s
                 powerConsumption: 30,  // Watts
                 efficiency: 0.05,      // MH/s per watt
                 temp: 65              // °C
