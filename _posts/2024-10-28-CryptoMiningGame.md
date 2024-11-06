@@ -478,7 +478,7 @@ permalink: /mining/
                     <option value="nicehash">NiceHash (2% fee, 4hr payout)</option>
                     <option value="ethermine">Ethermine (1% fee, 24hr payout)</option>
                     <option value="f2pool">F2Pool (2.5% fee, 12hr payout)</option>
-                    <option value="poolin">Bitcoin (3% fee, 1hr payout)</option>
+                    <option value="bitcoin">Bitcoin (3% fee, 1hr payout)</option>
                 </select>
                 <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
                     GPU Shop
@@ -1286,6 +1286,100 @@ permalink: /mining/
                 updateDisplay();
                 updateGpuInventory();
             }
+        }
+        function checkAndProcessPayout() {
+            const now = Date.now();
+            const pool = gameState.selectedPool;
+            // Define payout intervals in milliseconds
+            const payoutIntervals = {
+                nicehash: 4 * 60 * 60 * 1000,    // 4 hours
+                ethermine: 24 * 60 * 60 * 1000,  // 24 hours
+                f2pool: 12 * 60 * 60 * 1000,     // 12 hours
+                bitcoin: 1 * 60 * 60 * 1000      // 1 hour
+            };
+            // Check if enough time has passed since last payout
+            if ((now - gameState.lastPayout) >= payoutIntervals[pool]) {
+                // Process payout
+                if (gameState.pendingBalance > 0) {
+                    // Add pending balance to main balance
+                    gameState.btcBalance += gameState.pendingBalance;
+                    // Convert to USD at current market price
+                    gameState.usdBalance += gameState.pendingBalance * gameState.btcPrice.current;
+                    // Show notification
+                    showNotification(`Payout received: ${gameState.pendingBalance.toFixed(8)} BTC`);
+                    // Reset pending balance and update last payout time
+                    gameState.pendingBalance = 0;
+                    gameState.lastPayout = now;
+                    // Update display
+                    updateDisplay();
+                }
+            }
+            // Add debug logging
+            console.log(`Checking payout...
+                Pool: ${pool}
+                Time since last payout: ${((now - gameState.lastPayout) / (60 * 60 * 1000)).toFixed(2)} hours
+                Required interval: ${(payoutIntervals[pool] / (60 * 60 * 1000))} hours`);
+        }
+        /*
+        // **TESTING THE PAYOUTS**
+        function testPayout(hours) {
+            const poolSelect = document.querySelector('select');
+            const selectedPool = poolSelect.value;
+            gameState.selectedPool = selectedPool;
+            // Define base amounts per hour for each pool (accounting for their fees)
+            const poolRates = {
+                nicehash: 0.0001,    // 2% fee
+                ethermine: 0.00012,  // 1% fee (highest payout due to lowest fee)
+                f2pool: 0.000095,    // 2.5% fee
+                bitcoin: 0.00009     // 3% fee (lowest payout due to highest fee)
+            };
+            // Calculate payout based on pool rate and hours
+            const baseAmount = poolRates[selectedPool];
+            const testAmount = baseAmount * hours;
+            // Add the test amount to pending balance
+            gameState.pendingBalance = testAmount;
+            // Set last payout to X hours ago
+            gameState.lastPayout = Date.now() - (hours * 60 * 60 * 1000);
+            // Force check payout
+            checkAndProcessPayout();
+            updateDisplay();
+        }
+        // Add test UI
+        document.body.insertAdjacentHTML('beforeend', `
+            <div class="fixed top-4 right-4 bg-gray-800 p-4 rounded shadow-lg">
+                <h3 class="text-white mb-2">Test Pool Payouts</h3>
+                <div class="flex gap-2">
+                    <button onclick="testPayout(1)" class="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-white">
+                        Test 1hr
+                    </button>
+                    <button onclick="testPayout(4)" class="bg-green-500 hover:bg-green-600 px-3 py-1 rounded text-white">
+                        Test 4hr
+                    </button>
+                    <button onclick="testPayout(12)" class="bg-purple-500 hover:bg-purple-600 px-3 py-1 rounded text-white">
+                        Test 12hr
+                    </button>
+                    <button onclick="testPayout(24)" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white">
+                        Test 24hr
+                    </button>
+                </div>
+            </div>
+        `);
+        */
+        // Add notification function
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded shadow-lg transition-opacity duration-500';
+            notification.textContent = message;
+            // Add to document
+            document.body.appendChild(notification);
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 3000);
         }
     </script>
 </body>
