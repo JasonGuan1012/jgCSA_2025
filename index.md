@@ -221,6 +221,17 @@ hide: true
       <a id="bottom" href="https://nighthawkcoders.github.io/portfolio_2025/csa/unit7-p3/home">Our Team Teach</a>
     </div>
   </div>
+  
+  <div class="paste-button">
+    <button class="button">Sprint 3 &nbsp; ▼</button>
+    <div class="dropdown-content">
+      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/mining/">Crypto Mining</a>
+      <div class="submenu">
+        <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/2024/11/08/Practice-MCQ-ReviewTicket_IPYNB_2_.html">2014 Practice MCQ</a>
+      </div>
+      <a id="bottom" href="https://github.com/JasonGuan1012/jgCSA_2025/issues/9">Sprint 3 Review Ticket</a>
+    </div>
+  </div>
 </div>
 
 <style>
