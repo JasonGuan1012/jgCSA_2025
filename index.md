@@ -232,6 +232,17 @@ hide: true
       <a id="bottom" href="https://github.com/JasonGuan1012/jgCSA_2025/issues/9">Sprint 3 Review Ticket</a>
     </div>
   </div>
+
+  <div class="paste-button">
+    <button class="button">Final Interview &nbsp; ▼</button>
+    <div class="dropdown-content">
+      <a id="top" href="https://jasonguan1012.github.io/jgCSA_2025/FinalInterview">Final Interview</a>
+      <div class="submenu">
+        <a id="middle" href="https://jasonguan1012.github.io/jgCSA_2025/FinalInterview">Final Interview</a>
+      </div>
+      <a id="bottom" href="https://jasonguan1012.github.io/jgCSA_2025/FinalInterview">Final Interview</a>
+    </div>
+  </div>
 </div>
 
 <style>
